@@ -1,1 +1,10 @@
 C:\Users\LordGee\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.exe.config
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.exe.config
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.exe
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.pdb
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.csprojResolveAssemblyReference.cache
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Properties.Resources.resources
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.csproj.GenerateResource.Cache
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.exe
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.pdb
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Form1.resources

@@ -16,6 +16,19 @@ namespace BowlsSimulator
         {
             InitializeComponent();
         }
+
+        private void Form1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Form1_BackgroundImageChanged(object sender, EventArgs e)
+        {
+       
+        }
+
+      
+
         // this time next year we will be millionaires
     }
 }
