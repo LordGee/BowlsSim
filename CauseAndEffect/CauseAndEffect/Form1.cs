@@ -22,6 +22,8 @@ namespace CauseAndEffect
         }
         // public variables
         public Rectangle bowl1, bowl2;
+        public Region bowl3, bowl4;
+        public GraphicsPath pth;
         public Point bowlA = new Point(0, 100);
         public Point bowlB = new Point(300,100);
         public int bowlAV = 600;
@@ -34,6 +36,8 @@ namespace CauseAndEffect
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            bowl3 = new Region(pth);
+            
             // when the formloads draw two elipse
             e.Graphics.FillEllipse(Brushes.Green, bowl1);
             e.Graphics.FillEllipse(Brushes.Blue, bowl2);
