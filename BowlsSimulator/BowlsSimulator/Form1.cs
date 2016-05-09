@@ -19,15 +19,13 @@ namespace BowlsSimulator
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.DrawString(" Exit Game", new Font("ComfortaaBold.ttf", 36), Brushes.RoyalBlue, new Point(1000, 600));
+            e.Graphics.DrawString(" Option ", new Font("Comfortaa.ttf", 36), Brushes.RoyalBlue, new Point(10, 600));
 
         }
 
-        private void Form1_BackgroundImageChanged(object sender, EventArgs e)
-        {
-       
-        }
 
-      
+
 
         // this time next year we will be millionaires
     }

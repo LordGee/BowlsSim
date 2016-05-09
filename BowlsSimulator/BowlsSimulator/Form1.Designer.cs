@@ -40,7 +40,6 @@
             this.Name = "Form1";
             this.Text = "Start";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.BackgroundImageChanged += new System.EventHandler(this.Form1_BackgroundImageChanged);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.ResumeLayout(false);
 

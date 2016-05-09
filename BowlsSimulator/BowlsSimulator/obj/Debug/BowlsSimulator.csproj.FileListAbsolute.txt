@@ -8,3 +8,5 @@ C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\
 C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.exe
 C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.pdb
 C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Form1.resources
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\Resources\grass.jpg
+C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Resources.Resource1.resources
