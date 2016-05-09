@@ -10,3 +10,16 @@ C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\
 C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Form1.resources
 C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\Resources\grass.jpg
 C:\Users\jerem\Documents\GameDevelopment\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Resources.Resource1.resources
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.exe.config
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\Resources\grass.jpg
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.exe
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.pdb
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.csprojResolveAssemblyReference.cache
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Form1.resources
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Properties.Resources.resources
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Resources.Resource1.resources
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.csproj.GenerateResource.Cache
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.exe
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.pdb
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\Comfortaa.ttf
+E:\Personel Files\Gordon\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\ComfortaaBold.ttf

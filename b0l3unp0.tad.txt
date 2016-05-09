@@ -1,0 +1,69 @@
+﻿
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch is up-to-date with 'origin/master'.
+#
+# Changes to be committed:
+#	new file:   bowlssim/.gitattributes
+#	new file:   bowlssim/.gitignore
+#	new file:   bowlssim/BiasPrototype/BiasPrototype.sln
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/App.config
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/BiasPrototype.csproj
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/Form1.Designer.cs
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/Form1.cs
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/Program.cs
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/Properties/AssemblyInfo.cs
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/Properties/Resources.Designer.cs
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/Properties/Resources.resx
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/Properties/Settings.Designer.cs
+#	new file:   bowlssim/BiasPrototype/BiasPrototype/Properties/Settings.settings
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator.sln
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/App.config
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/BowlsSimulator.csproj
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Comfortaa.ttf
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Form1.Designer.cs
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Form1.cs
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Form1.resx
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Program.cs
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Properties/AssemblyInfo.cs
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Properties/Resources.Designer.cs
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Properties/Resources.resx
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Properties/Settings.Designer.cs
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Properties/Settings.settings
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Resources/ComfortaaBold.ttf
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Resources/Resource1.Designer.cs
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Resources/Resource1.resx
+#	new file:   bowlssim/BowlsSimulator/BowlsSimulator/Resources/grass.jpg
+#	new file:   bowlssim/BowlsSimulator/grass.jpg
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect.sln
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/App.config
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/CauseAndEffect.csproj
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Form1.Designer.cs
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Form1.cs
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Form1.resx
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Program.cs
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Properties/AssemblyInfo.cs
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Properties/Resources.Designer.cs
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Properties/Resources.resx
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Properties/Settings.Designer.cs
+#	new file:   bowlssim/CauseAndEffect/CauseAndEffect/Properties/Settings.settings
+#	new file:   bowlssim/README.md
+#
+# Changes not staged for commit:
+#	modified:   BowlsSimulator/.vs/BowlsSimulator/v14/.suo
+#	modified:   BowlsSimulator/BowlsSimulator/BowlsSimulator.csproj
+#	modified:   BowlsSimulator/BowlsSimulator/Form1.Designer.cs
+#	modified:   BowlsSimulator/BowlsSimulator/Form1.cs
+#	deleted:    BowlsSimulator/BowlsSimulator/Resources/ComfortaaBold.ttf
+#	modified:   BowlsSimulator/BowlsSimulator/Resources/Resource1.Designer.cs
+#	modified:   BowlsSimulator/BowlsSimulator/Resources/Resource1.resx
+#	modified:   BowlsSimulator/BowlsSimulator/obj/Debug/BowlsSimulator.csproj.FileListAbsolute.txt
+#	modified:   BowlsSimulator/BowlsSimulator/obj/Debug/DesignTimeResolveAssemblyReferences.cache
+#	modified:   BowlsSimulator/BowlsSimulator/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+#	deleted:    BowlsSimulator/grass.jpg
+#
+# Untracked files:
+#	BowlsSimulator/BowlsSimulator/ComfortaaBold.ttf
+#
+

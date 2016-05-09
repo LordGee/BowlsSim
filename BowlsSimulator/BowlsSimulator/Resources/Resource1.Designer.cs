@@ -61,12 +61,12 @@ namespace BowlsSimulator.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static byte[] ComfortaaBold {
+        internal static System.Drawing.Bitmap grass {
             get {
-                object obj = ResourceManager.GetObject("ComfortaaBold", resourceCulture);
-                return ((byte[])(obj));
+                object obj = ResourceManager.GetObject("grass", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
