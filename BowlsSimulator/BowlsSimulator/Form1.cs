@@ -18,14 +18,14 @@ namespace BowlsSimulator
         {
             InitializeComponent();
         }
+        // Public Variables
+        public int fs = 36; // Font Size
         
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            int fs = 36;
             Font ff = new Font("Comfortaa", fs, FontStyle.Bold);
             e.Graphics.DrawString(" Exit Game", ff, Brushes.DarkRed, new Point(1000, 600));
             e.Graphics.DrawString(" a Option ", ff, Brushes.DarkBlue, new Point(10, 600));
-
         }
 
 

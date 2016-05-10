@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +18,13 @@ namespace BowlsSimulator
         {
             InitializeComponent();
         }
-
+        
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.DrawString(" Exit Game", new Font("ComfortaaBold.ttf", 36), Brushes.RoyalBlue, new Point(1000, 600));
-            e.Graphics.DrawString(" Option ", new Font("Comfortaa.ttf", 36), Brushes.RoyalBlue, new Point(10, 600));
+            int fs = 36;
+            Font ff = new Font("Comfortaa", fs, FontStyle.Bold);
+            e.Graphics.DrawString(" Exit Game", ff, Brushes.DarkRed, new Point(1000, 600));
+            e.Graphics.DrawString(" a Option ", ff, Brushes.DarkBlue, new Point(10, 600));
 
         }
 
