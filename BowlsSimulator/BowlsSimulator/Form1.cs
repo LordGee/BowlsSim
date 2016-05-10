@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,10 +22,11 @@ namespace BowlsSimulator
         public int fs = 36; // Define the size of the font used
         public int screenWidth, screenHeight; // Varable to hold the size of the form maximised on load
         public int bannerHeight, gameHeight; // Variables to gold the height of the game area and the heaight for the header and footers.
+        public Font ff;
 
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
         {
-            Font ff = new Font("Comfortaa", fs, FontStyle.Bold); // defines the font style for the graphic text used
+            //Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used
             gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area
             bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
             e.Graphics.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
@@ -37,6 +39,7 @@ namespace BowlsSimulator
         private void frmMainGame_Load(object sender, EventArgs e)
         {
             screenSize(); // executes function to find out the form width and height at launch
+            customFont();
         }
 
         public void screenSize()
@@ -45,6 +48,11 @@ namespace BowlsSimulator
             screenHeight = this.ClientSize.Height; // populates variable screenHeight with the actual current form height
         }
 
-       
+        public void customFont()
+        {
+            PrivateFontCollection pfc = new PrivateFontCollection();
+            pfc.AddFontFile("resources/Comfortaa-bold.ttf");
+            ff = new Font(pfc.Families[0], fs, FontStyle.Bold);
+        }
     }
 }
