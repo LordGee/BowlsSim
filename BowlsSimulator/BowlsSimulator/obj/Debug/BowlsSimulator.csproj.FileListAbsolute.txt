@@ -30,3 +30,16 @@ C:\Users\LordGee\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\D
 C:\Users\LordGee\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Properties.Resources.resources
 C:\Users\LordGee\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.csproj.GenerateResource.Cache
 C:\Users\LordGee\OneDrive\Documents\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Resources.Resource1.resources
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.exe.config
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.csprojResolveAssemblyReference.cache
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Form1.resources
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Properties.Resources.resources
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.Resources.Resource1.resources
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.csproj.GenerateResource.Cache
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\Comfortaa.ttf
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\Resources\grass.jpg
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.exe
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\BowlsSimulator.pdb
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.exe
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\obj\Debug\BowlsSimulator.pdb
+C:\BowlsSim\BowlsSimulator\BowlsSimulator\bin\Debug\Comfortaa-Bold.ttf

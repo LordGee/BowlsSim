@@ -23,7 +23,7 @@ namespace BowlsSimulator
         
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Font ff = new Font("Comfortaa", fs, FontStyle.Bold);
+            Font ff = new Font("Comfortaa.ttf", fs, FontStyle.Bold);
             e.Graphics.DrawString(" Exit Game", ff, Brushes.DarkRed, new Point(1000, 600));
             e.Graphics.DrawString(" a Option ", ff, Brushes.DarkBlue, new Point(10, 600));
         }
