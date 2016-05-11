@@ -25,7 +25,7 @@ namespace CauseAndEffect
         public Region bowl3, bowl4;
         public GraphicsPath pth;
         public Point bowlA = new Point(0, 100);
-        public Point bowlB = new Point(300,100);
+        public Point bowlB = new Point(300,150);
         public int bowlAV = 600;
         public int bowlW = 75;
 
@@ -36,7 +36,7 @@ namespace CauseAndEffect
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            bowl3 = new Region(pth);
+            //bowl3 = new Region(pth);
             
             // when the formloads draw two elipse
             e.Graphics.FillEllipse(Brushes.Green, bowl1);
@@ -58,7 +58,11 @@ namespace CauseAndEffect
             }
             bowl1 = new Rectangle(bowlA.X, bowlA.Y, bowlW, bowlW);
             bowl2 = new Rectangle(bowlB.X, bowlB.Y, bowlW, bowlW);
-            if (bowl1.IntersectsWith(bowl2))
+            //if (bowl1.IntersectsWith(bowl2))
+            //{
+            //    tmrAnimate.Stop();
+            //}
+            if (circleCollide(bowl1.X, bowl1.Y, bowl2.X, bowl2.Y, bowlW /2, bowlW / 2))
             {
                 tmrAnimate.Stop();
             }
@@ -68,5 +72,13 @@ namespace CauseAndEffect
             }
             
         }
+        public bool circleCollide(int _X1, int _Y1, int _X2, int _Y2, int _r1, int _r2)
+        {
+            return (Math.Sqrt(Math.Pow(Math.Abs(_X1 - _X2), 2) + Math.Pow(Math.Abs(_Y1 - _Y2), 2)) <= (_r1 + _r2));
+        }
+        //private bool innerCircle(int x1, int y1)
+        //{  // determine if the cursor is within the circle
+        //    // return (Math.Pow(x1 - (disc.x + disc.r), 2) + Math.Pow(y1 - (disc.y + disc.r), 2) < Math.Pow(disc.r, 2));
+        //}
     }
 }
