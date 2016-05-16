@@ -26,7 +26,7 @@ namespace CauseAndEffect
         public GraphicsPath pth;
         public Point bowlA = new Point(0, 100);
         public Point bowlB = new Point(300,150);
-        public int bowlAV = 600;
+        public int bowlAV = 380;
         public int bowlW = 75;
 
         private void Form1_Load(object sender, EventArgs e)
@@ -51,12 +51,16 @@ namespace CauseAndEffect
                     if (!coll)
                     {
                         bowlA.X = bowlA.X + 2;
-                        bowlAV--;    
-                    }
+                        bowlAV--;
+                        bowlA.Y -= (int)newY1;
+                }
                     else
                     {
                         newDirect(bowl1.X, bowl1.Y, bowl2.X, bowl2.Y);
                         bowlAV--;
+                        bowlA.X = bowlA.X + 2;
+                        bowlA.Y -= (int)newY1;
+                        coll = false;
                     }
 
                 }
@@ -86,16 +90,19 @@ namespace CauseAndEffect
         {
             return (Math.Sqrt(Math.Pow(Math.Abs(_X1 - _X2), 2) + Math.Pow(Math.Abs(_Y1 - _Y2), 2)) <= (_r1 + _r2));
         }
+        public double newY1;
         public void newDirect(int _X1, int _Y1, int _X2, int _Y2)
         {
             double _A = Math.Abs(_X1 - _X2);
             double _O = Math.Abs(_Y1 - _Y2);
-            double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2));
-            double _LX = Math.Abs(_X1 - _X2) / 2;
-            double _LY = Math.Abs(_Y1 - _Y2) / 2;
+            // double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2));
+            // double _LX = Math.Abs(_X1 - _X2) / 2;
+            // double _LY = Math.Abs(_Y1 - _Y2) / 2;
             double _toa = Math.Abs(_O / _A);
             double _deg = Math.Atan(_toa) * 180 / Math.PI;
-            _deg = Math.Abs(_deg + 90 - 100);
+            _deg = Math.Abs(_deg + 90 - 180);
+            newY1 = Math.Tan(_deg) * (_X1 + 2);
+            // newY1 = Math.Abs(newY1 - _Y1);
         }
         
     }
