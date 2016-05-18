@@ -24,11 +24,16 @@ namespace CauseAndEffect
         public RectangleF bowl1, bowl2;
         public Region bowl3, bowl4;
         public GraphicsPath pth;
-        public PointF bowlA = new Point(0, 101);
+        int sAx = 0;
+        int sAy = 100;
+        int sBy = 150;
+        int sBx = 300;
+        public PointF bowlA = new Point(0, 100);
         public PointF bowlB = new Point(300,150);
         public int bowlAV = 800;
         public int bowlW = 75;
         public int bowlBV = 0;
+        int count = 0;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -82,6 +87,7 @@ namespace CauseAndEffect
                 else
                 {
                     tmrAnimate.Stop();
+                    again();
                 }
             
             
@@ -101,6 +107,21 @@ namespace CauseAndEffect
             }
             
         }
+        public void again()
+        {
+            count++;
+            bowlA.X = sAx;
+            bowlA.Y = sAy + count;
+            bowlB.X = sBx;
+            bowlB.Y = sBy;
+            bowlAV = 800;
+            bowlBV = 0;
+            newY1 = 0;
+            coll = false;
+            once = false;
+            Refresh();
+            tmrAnimate.Start();
+        }
         public bool once = false;
         public int newY;
         public bool circleCollide(float _X1, float _Y1, float _X2, float _Y2, int _r1, int _r2)
@@ -110,18 +131,20 @@ namespace CauseAndEffect
         public double newY1;
         public void newDirect(float _X1, float _Y1, float _X2, float _Y2)
         {
-            double _O = Math.Abs(_X1 - _X2);
-            double _A = Math.Abs(_Y1 - _Y2);
-            // double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2));
-            // double _LX = Math.Abs(_X1 - _X2) / 2;
-            // double _LY = Math.Abs(_Y1 - _Y2) / 2;
-            double _toa = Math.Abs(_O / _A);
-            double _deg = Math.Atan(_toa) * 180 / Math.PI;
+            double _A = _X1 - _X2;
+            double _O = _Y1 - _Y2;
+            
+            double _toa = _O / _A;
+            double _deg = Math.Atan(_toa)/* * 180 / Math.PI*/;
             // _deg = Math.Abs(_deg);
-            newY1 = Math.Abs(Math.Tan(_deg) * 2);
+            newY1 = Math.Tan(_deg) * 2;
             bowlAV = bowlAV / 2;
             bowlBV = bowlAV;
             // newY1 = Math.Abs(newY1 - _Y1);
+
+            // double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2));
+            // double _LX = Math.Abs(_X1 - _X2) / 2;
+            // double _LY = Math.Abs(_Y1 - _Y2) / 2;
         }
         
     }
