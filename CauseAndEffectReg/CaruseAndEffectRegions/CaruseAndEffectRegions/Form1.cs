@@ -17,8 +17,6 @@ namespace CaruseAndEffectRegions
         {
             InitializeComponent();
         }
-        public Brush p1c = Brushes.Blue;
-        public Brush p2c = Brushes.Red;
         public Random ran = new Random();
         public SizeF bSize = new SizeF(50, 50);
         public float pow = 0;
@@ -30,6 +28,7 @@ namespace CaruseAndEffectRegions
             public RectangleF bowl;
             public float power;
             public double newY;
+            public int coll;
         }
         theBowls newbowl = new theBowls();
         List<theBowls> Bowls = new List<theBowls>();
@@ -52,66 +51,60 @@ namespace CaruseAndEffectRegions
         public int thisPlayer = 1;
         private void tmr_Tick(object sender, EventArgs e)
         {
+            foreach (theBowls _c in Bowls)
+            {
+                if (_c.power <= 0)
+                {
+                    _c.coll = 0;
+                }
+                
+            }
             foreach (theBowls _b in Bowls)
             {
                 if (_b.power > 0)
                 {
                     foreach (theBowls _b2 in Bowls)
                     {
-                        if (_b != _b2 && !collide)
+                        if (_b != _b2 /*&& _b.coll == 0*/)
                         {
                             if (circleCollide(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, (int)bSize.Height / 2, (int)bSize.Width / 2))
                             {
-                                collide = true;
-                                newDirect(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, _b.power);
-                                _b.power = pow;
-                                _b2.power = pow;
-                                if (_b.bowl.Y > _b2.bowl.Y)
+                                if (_b.coll == 0 || _b2.coll == 0)
                                 {
-                                    _b.newY -= passY;
-                                    _b2.newY += passY;
+                                    newDirect(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, _b.power);
+                                    _b.power = pow;
+                                    _b2.power = pow;
+                                    _b.newY = 0;
+                                    _b2.newY = 0;
+                                    _b.newY = passY;
+                                    _b2.newY = passY;
+                                    _b.coll = 1;
+                                    _b2.coll = 2;
                                 }
-                                else
-                                {
-                                    _b.newY += passY;
-                                    _b2.newY -= passY;
-                                }
-                                
-                                /*
-                                if (_b2.power > 0)
-                                {
-                                    _b2.bowl.X = _b2.bowl.X + 1;
-                                    _b2.bowl.Y += (float)_b2.newY;
-                                    _b2.power--;
-                                    _b.bowl.X = _b.bowl.X + 1;
-                                    _b.bowl.Y -= (float)_b.newY;
-                                    _b.power--;
-                                    Refresh();
-                                }
-                                */
-                            }
-                            /*
-                            else if (_b2.power > 0)
-                            {
-                                _b2.bowl.X = _b2.bowl.X + 1;
-                                _b2.bowl.Y += (float)_b2.newY;
-                                _b2.power--;
-                                Refresh();
-                            }
-                            */
-                            else
-                            {
-                                collide = false;
                             }
                         }
                     }
-                    else 
+                    if (_b.coll == 2)
                     {
                         _b.bowl.X = _b.bowl.X + 2;
                         _b.power = _b.power - 2;
                         _b.bowl.Y += (float)_b.newY;
-                        Refresh();
                     }
+                    else if (_b.coll == 1)
+                    {
+                        _b.bowl.X = _b.bowl.X + 2;
+                        _b.power = _b.power - 2;
+                        _b.bowl.Y -= (float)_b.newY;
+                    }
+                    else
+                    {
+                        _b.bowl.X = _b.bowl.X + 2;
+                        _b.power = _b.power - 2;
+                        _b.bowl.Y += (float)_b.newY;
+                    }
+
+
+                    Refresh();
                 }
             }
             int c = 0;
@@ -125,7 +118,6 @@ namespace CaruseAndEffectRegions
             }
             if (c == l)
             {
-                test = false;
                 if (thisPlayer == 1)
                 {
                     thisPlayer = 2;
@@ -134,7 +126,7 @@ namespace CaruseAndEffectRegions
                 {
                     thisPlayer = 1;
                 }
-                PointF bowlXY = new PointF(startX, ran.Next(500, 600));
+                PointF bowlXY = new PointF(startX, 500);
                 drawNewBowl(bowlXY);
             }
 
@@ -145,6 +137,7 @@ namespace CaruseAndEffectRegions
             newbowl.bowl = new RectangleF(_xy, bSize);
             newbowl.play = thisPlayer;
             newbowl.power = ran.Next(500, 1000);
+            newbowl.newY = ran.NextDouble() - 0.5;
             Bowls.Add(newbowl);
         }
 
@@ -167,18 +160,13 @@ namespace CaruseAndEffectRegions
             // double _LX = Math.Abs(_X1 - _X2) / 2;
             // double _LY = Math.Abs(_Y1 - _Y2) / 2;
         }
-        public bool test;
         private void Form1_Load(object sender, EventArgs e)
         {
             gameLoop();
         }
         public void gameLoop()
         {
-            test = true;
-            int count = 0;
-            PointF bowlXY = new PointF(startX, ran.Next(500, 600));
-            passY = 0;
-            drawNewBowl(bowlXY);
+            thisPlayer = 2;
             tmr.Start();
         }
     }
