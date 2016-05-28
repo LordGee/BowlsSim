@@ -33,8 +33,7 @@ namespace BowlsSimulator
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
         {
             // Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
-            gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area // increased from the design to 200 from 100 to make the game area bigger then the banners
-            bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
+            
             e.Graphics.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
             e.Graphics.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
             e.Graphics.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
@@ -54,7 +53,7 @@ namespace BowlsSimulator
         }
         public void drawButtons()
         {
-            Rectangle exitR = new Rectangle((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2), 100, 50);
+            Rectangle exitR = new Rectangle((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2), 250, 50);
             pth = new GraphicsPath();
             pth.AddRectangle(exitR);
             exitButton = new Region(pth);
@@ -81,6 +80,8 @@ namespace BowlsSimulator
         {
             screenWidth = this.ClientSize.Width; // populates variable screenWidth with the actual current form width
             screenHeight = this.ClientSize.Height; // populates variable screenHeight with the actual current form height
+            gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area // increased from the design to 200 from 100 to make the game area bigger then the banners
+            bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
         }
 
         public void customFont()
