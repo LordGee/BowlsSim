@@ -63,13 +63,13 @@ namespace BowlsSimulator
         private void frmMainGame_MouseMove(object sender, MouseEventArgs e)
         {   
             if (exitButton.IsVisible(e.Location) && !testColour)
-            {
+            { // if the mouse cursor hovers over the exit button change the colour to Gold
                 exitColour = Brushes.Gold;
                 Refresh();
                 testColour = true;
             }
             else if (testColour && !exitButton.IsVisible(e.Location))
-            {
+            { // if it's anywhere else change it back to Red
                 exitColour = Brushes.DarkRed;
                 Refresh();
                 testColour = false;
@@ -80,6 +80,7 @@ namespace BowlsSimulator
         {
             screenWidth = this.ClientSize.Width; // populates variable screenWidth with the actual current form width
             screenHeight = this.ClientSize.Height; // populates variable screenHeight with the actual current form height
+            // the next two items need to be loaded before the paint event //
             gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area // increased from the design to 200 from 100 to make the game area bigger then the banners
             bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
         }
@@ -89,8 +90,6 @@ namespace BowlsSimulator
             PrivateFontCollection pfc = new PrivateFontCollection(); // Creates a new instance of a Private Font Collection
             pfc.AddFontFile("resources/Comfortaa-bold.ttf"); // Adds a font held in the application resources into the collection pfc
             ff = new Font(pfc.Families[0], fs, FontStyle.Bold); // defines the variable ff with the font family, size and style
-            
-          
         }
     }
 }

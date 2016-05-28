@@ -22,7 +22,7 @@ namespace CauseAndEffect
         }
         // public variables
         public RectangleF bowl1, bowl2;
-        public Region bowl3, bowl4;
+        
         public GraphicsPath pth;
         int sAx = 0;
         int sAy = 100;
@@ -35,9 +35,15 @@ namespace CauseAndEffect
         public int bowlBV = 0;
         int count = 0;
 
+        class theBowls
+        {
+            public Region bowl;
+        }
+        theBowls b = new theBowls();
+        List<theBowls> newBowl = new List<theBowls>();
         private void Form1_Load(object sender, EventArgs e)
         {
-            tmrAnimate.Interval = 30;
+            tmrAnimate.Interval = 10;
             tmrAnimate.Start();
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
