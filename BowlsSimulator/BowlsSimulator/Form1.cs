@@ -40,8 +40,8 @@ namespace BowlsSimulator
         public int thisPlayer = 1;
         public double passY;
         public Region pbB, pbF;
-        public int count = 0;
-        public bool test = false;
+        public int powerCount = 0;
+        public bool powerTest = false;
         bool testExitColour;
         bool testOptionColour;
 
@@ -73,10 +73,9 @@ namespace BowlsSimulator
             e.Graphics.FillRegion(Brushes.Transparent, optionsButtons);
             e.Graphics.FillRegion(Brushes.White, oMat);
             e.Graphics.FillRegion(Brushes.Black, iMat);
-            if (pbB != null)
+            if (pbF != null)
             {
-                e.Graphics.FillRegion(Brushes.PaleGoldenrod, pbB);
-                e.Graphics.FillRegion(Brushes.IndianRed, pbF);
+                e.Graphics.FillRegion(Brushes.LightSkyBlue, pbF);
             }
 
             foreach (theBowls _b in Bowls)
@@ -98,6 +97,7 @@ namespace BowlsSimulator
             drawButtons(); // draws regions for generic layout
             customFont(); // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
             drawMat(); // defines the mat region that is drawn to the canvas
+            powerTime.Start();
         }
         public void drawButtons()
         {
@@ -163,13 +163,34 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
-                Application.
+                
             }
         }
 
-        
-
-
+        private void powerTime_Tick(object sender, EventArgs e)
+        {
+            if (powerCount > ClientSize.Width)
+            {
+                powerTest = true;
+            }
+            else if (powerCount < 10)
+            {
+                powerTest = false;
+            }
+            if (!powerTest)
+            {
+                powerCount += 5;
+            }
+            else
+            {
+                powerCount -= 5;
+            }
+            Rectangle pbFront = new Rectangle(0, bannerHeight + gameHeight, powerCount, 30);
+            pth = new GraphicsPath();
+            pth.AddRectangle(pbFront);
+            pbF = new Region(pth);
+            Refresh();
+        }
 
         public void screenSize()
         {

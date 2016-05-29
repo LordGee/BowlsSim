@@ -28,7 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.powerTime = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
+            // 
+            // powerTime
+            // 
+            this.powerTime.Interval = 10;
+            this.powerTime.Tick += new System.EventHandler(this.powerTime_Tick);
             // 
             // frmMainGame
             // 
@@ -51,6 +58,8 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.Timer powerTime;
     }
 }
 
