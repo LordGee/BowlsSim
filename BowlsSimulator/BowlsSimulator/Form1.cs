@@ -74,7 +74,7 @@ namespace BowlsSimulator
             e.Graphics.FillRegion(Brushes.Transparent, optionsButtons);
             e.Graphics.FillRegion(Brushes.White, oMat);
             e.Graphics.FillRegion(Brushes.Black, iMat);
-            e.Graphics.DrawString("Continue Game", ff, continueColour, new Point((screenWidth - 150), (screenHeight / 3) - (fs / 3))); //  draw option menu button
+            e.Graphics.DrawString("Two Player Game", ff, continueColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
             if (pbF != null)
             {
                 e.Graphics.FillRegion(Brushes.LightSkyBlue, pbF);
@@ -91,6 +91,7 @@ namespace BowlsSimulator
                     e.Graphics.FillEllipse(Brushes.Red, _b.bowl);
                 }
             }
+
         }
 
         private void frmMainGame_Load(object sender, EventArgs e)
