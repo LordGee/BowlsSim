@@ -66,37 +66,37 @@ namespace BowlsSimulator
             optionsButtons = new Region(pth);
 
         }
-        bool testColour;
+        bool testExitColour;
+        bool testOptionColour;
     
         private void frmMainGame_MouseMove(object sender, MouseEventArgs e)
         {   
-            if (exitButton.IsVisible(e.Location) && !testColour)
+            if (exitButton.IsVisible(e.Location) && !testExitColour)
             { // if the mouse cursor hovers over the exit button change the colour to Gold
                 exitColour = Brushes.Gold;
                 Refresh();
-                testColour = true;
+                testExitColour = true;
 
             }
-            else if (testColour && !exitButton.IsVisible(e.Location))
+            else if (testExitColour && !exitButton.IsVisible(e.Location))
             { // if it's anywhere else change it back to Red
                 exitColour = Brushes.DarkRed;
                 Refresh();
-                testColour = false;
+                testExitColour = false;
             }
 
-           else if (optionsButtons.IsVisible(e.Location) && !testColour)
+           if (optionsButtons.IsVisible(e.Location) && !testOptionColour)
             {
-                optionColour = Brushes.Red;
+                optionColour = Brushes.Gold;
                 Refresh();
-               testColour = true;
+                testOptionColour = true;
             }
-            else if (testColour && !optionsButtons.IsVisible(e.Location))
+            else if (testOptionColour && !optionsButtons.IsVisible(e.Location))
             {
                 optionColour = Brushes.DarkBlue;
-                testColour = false;
                 Refresh();
+                testOptionColour = false;
             } 
-
         }
 
         private void frmMainGame_MouseClick(object sender, MouseEventArgs e)
