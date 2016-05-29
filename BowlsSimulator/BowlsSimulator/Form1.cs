@@ -30,7 +30,34 @@ namespace BowlsSimulator
         public GraphicsPath pth;
         public Region optionsButtons;
         public Brush optionColour = Brushes.DarkBlue;
+        public Random ran = new Random();
+        public SizeF bSize = new SizeF(50, 50);
+        public float pow = 0;
+        public const float startX = 100;
+        public const float startY = 300;
+        public GraphicsPath mpth;
+        public Region oMat, iMat;
+        public int thisPlayer = 1;
+        public double passY;
+        public Region pbB, pbF;
+        public int count = 0;
+        public bool test = false;
+        bool testExitColour;
+        bool testOptionColour;
 
+        class theBowls // The main dynamic class
+        {
+            public int play;
+            public RectangleF bowl;
+            public float power;
+            public float power30;
+            public double newY;
+            public double startY;
+            public int coll;
+            public double bias;
+        }
+        theBowls newbowl = new theBowls();
+        List<theBowls> Bowls = new List<theBowls>(); // generates the list of the dynamic class
 
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
         {
@@ -44,7 +71,25 @@ namespace BowlsSimulator
             e.Graphics.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
             e.Graphics.FillRegion(Brushes.Transparent, exitButton);
             e.Graphics.FillRegion(Brushes.Transparent, optionsButtons);
+            e.Graphics.FillRegion(Brushes.White, oMat);
+            e.Graphics.FillRegion(Brushes.Black, iMat);
+            if (pbB != null)
+            {
+                e.Graphics.FillRegion(Brushes.PaleGoldenrod, pbB);
+                e.Graphics.FillRegion(Brushes.IndianRed, pbF);
+            }
 
+            foreach (theBowls _b in Bowls)
+            {
+                if (_b.play == 1)
+                {
+                    e.Graphics.FillEllipse(Brushes.Blue, _b.bowl);
+                }
+                else if (_b.play == 2)
+                {
+                    e.Graphics.FillEllipse(Brushes.Red, _b.bowl);
+                }
+            }
         }
 
         private void frmMainGame_Load(object sender, EventArgs e)
@@ -52,7 +97,7 @@ namespace BowlsSimulator
             screenSize(); // executes function to find out the form width and height at launch
             drawButtons(); // draws regions for generic layout
             customFont(); // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
-          
+            drawMat(); // defines the mat region that is drawn to the canvas
         }
         public void drawButtons()
         {
@@ -66,8 +111,19 @@ namespace BowlsSimulator
             optionsButtons = new Region(pth);
 
         }
-        bool testExitColour;
-        bool testOptionColour;
+        public void drawMat()
+        {
+            Rectangle outerMat = new Rectangle(ditchW * 2, gameHeight + bannerHeight - (gameHeight / 2) - 50, 200, 100);
+            pth = new GraphicsPath();
+            pth.AddRectangle(outerMat);
+            oMat = new Region(pth);
+
+            Rectangle innerMat = new Rectangle(ditchW * 2 + 10, gameHeight + bannerHeight - (gameHeight / 2) - 50 + 10, 180, 80);
+            pth = new GraphicsPath();
+            pth.AddRectangle(innerMat);
+            iMat = new Region(pth);
+        }
+        
     
         private void frmMainGame_MouseMove(object sender, MouseEventArgs e)
         {   
@@ -129,6 +185,29 @@ namespace BowlsSimulator
             PrivateFontCollection pfc = new PrivateFontCollection(); // Creates a new instance of a Private Font Collection
             pfc.AddFontFile("resources/Comfortaa-bold.ttf"); // Adds a font held in the application resources into the collection pfc
             ff = new Font(pfc.Families[0], fs, FontStyle.Bold); // defines the variable ff with the font family, size and style
+        }
+
+        public bool circleCollide(float _X1, float _Y1, float _X2, float _Y2, int _r1, int _r2)
+        {
+            return (Math.Sqrt(Math.Pow(Math.Abs(_X1 - _X2), 2) + Math.Pow(Math.Abs(_Y1 - _Y2), 2)) <= (_r1 + _r2));
+        }
+
+        public void newDirect(float _X1, float _Y1, float _X2, float _Y2, float _p)
+        {
+            double _A = _X1 - _X2;
+            double _O = _Y1 - _Y2;
+            double _toa = _O / _A;
+            double _deg = Math.Atan(_toa);
+            passY = Math.Tan(_deg) * 2;
+            if (passY > 4)
+            {
+                passY = 4;
+            }
+            else if (passY < -4)
+            {
+                passY = -4;
+            }
+            pow = _p / 2.5f;
         }
     }
 }
