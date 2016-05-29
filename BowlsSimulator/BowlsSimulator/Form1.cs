@@ -107,7 +107,7 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
-
+                Application.
             }
         }
 
