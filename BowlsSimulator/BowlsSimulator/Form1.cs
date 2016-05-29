@@ -28,21 +28,24 @@ namespace BowlsSimulator
         public Region exitButton;
         public Brush exitColour = Brushes.DarkRed;
         public GraphicsPath pth;
+        public Region optionsButtons;
+        public Brush optionColour = Brushes.DarkBlue;
 
 
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
         {
             // Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
-            gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area // increased from the design to 200 from 100 to make the game area bigger then the banners
-            bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
+           
             e.Graphics.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
             e.Graphics.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
             e.Graphics.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
-            e.Graphics.DrawString("Options", ff, Brushes.DarkBlue, new Point(50, (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the options button
+            e.Graphics.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
             e.Graphics.FillRectangle(Brushes.Brown, 0,bannerHeight, ditchW,gameHeight); // draw the left ditch
             e.Graphics.FillRectangle(Brushes.Brown, screenWidth - ditchW, bannerHeight, ditchW, gameHeight); // draw the right ditch
             e.Graphics.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
             e.Graphics.FillRegion(Brushes.Transparent, exitButton);
+            e.Graphics.FillRegion(Brushes.Transparent, optionsButtons);
+
         }
 
         private void frmMainGame_Load(object sender, EventArgs e)
@@ -50,24 +53,30 @@ namespace BowlsSimulator
             screenSize(); // executes function to find out the form width and height at launch
             drawButtons(); // draws regions for generic layout
             customFont(); // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
-
+          
         }
         public void drawButtons()
         {
-            Rectangle exitR = new Rectangle((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2), 100, 50);
+            Rectangle exitR = new Rectangle((screenWidth - 300), (screenHeight - (bannerHeight / 2) - (fs / 2)), 250, 50);
             pth = new GraphicsPath();
             pth.AddRectangle(exitR);
             exitButton = new Region(pth);
-            
+            pth.ClearMarkers();
+            Rectangle optionR = new Rectangle(50, (screenHeight - (bannerHeight / 2) - (fs / 2)), 250, 60);
+            pth.AddRectangle(optionR);
+            optionsButtons = new Region(pth);
+
         }
-        bool testColour = false;
+        bool testColour;
+    
         private void frmMainGame_MouseMove(object sender, MouseEventArgs e)
         {   
             if (exitButton.IsVisible(e.Location) && !testColour)
             {
-                exitColour = Brushes.Gold;
-                Refresh();
-                testColour = true;
+                    exitColour = Brushes.Gold;
+                    Refresh();
+                    testColour = true;
+             
             }
             else if (testColour && !exitButton.IsVisible(e.Location))
             {
@@ -75,12 +84,44 @@ namespace BowlsSimulator
                 Refresh();
                 testColour = false;
             }
+
+           else if (optionsButtons.IsVisible(e.Location) && !testColour)
+            {
+                optionColour = Brushes.Red;
+                Refresh();
+               testColour = true;
+            }
+            else if (testColour && !optionsButtons.IsVisible(e.Location))
+            {
+                optionColour = Brushes.DarkBlue;
+                testColour = false;
+                Refresh();
+            } 
+
         }
+
+        private void frmMainGame_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left && exitButton.IsVisible(e.Location))
+            {
+                Application.Exit();
+            }
+            else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
+            {
+
+            }
+        }
+
+        
+
+
 
         public void screenSize()
         {
             screenWidth = this.ClientSize.Width; // populates variable screenWidth with the actual current form width
             screenHeight = this.ClientSize.Height; // populates variable screenHeight with the actual current form height
+            gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area // increased from the design to 200 from 100 to make the game area bigger then the banners
+            bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
         }
 
         public void customFont()
