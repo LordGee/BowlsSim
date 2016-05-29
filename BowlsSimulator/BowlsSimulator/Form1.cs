@@ -44,6 +44,7 @@ namespace BowlsSimulator
         public bool test = false;
         bool testExitColour;
         bool testOptionColour;
+        Brush continueColour = Brushes.DarkGreen;
 
         class theBowls // The main dynamic class
         {
@@ -73,6 +74,7 @@ namespace BowlsSimulator
             e.Graphics.FillRegion(Brushes.Transparent, optionsButtons);
             e.Graphics.FillRegion(Brushes.White, oMat);
             e.Graphics.FillRegion(Brushes.Black, iMat);
+            e.Graphics.DrawString("Continue Game", ff, continueColour, new Point((screenWidth - 150), (screenHeight / 3) - (fs / 3))); //  draw option menu button
             if (pbB != null)
             {
                 e.Graphics.FillRegion(Brushes.PaleGoldenrod, pbB);
@@ -163,7 +165,7 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
-                Application.
+                
             }
         }
 
