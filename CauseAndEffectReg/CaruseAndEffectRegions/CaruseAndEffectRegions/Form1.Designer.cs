@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.tmr = new System.Windows.Forms.Timer(this.components);
+            this.powerTmr = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // tmr
@@ -37,12 +38,18 @@
             this.tmr.Interval = 10;
             this.tmr.Tick += new System.EventHandler(this.tmr_Tick);
             // 
+            // powerTmr
+            // 
+            this.powerTmr.Interval = 10;
+            this.powerTmr.Tick += new System.EventHandler(this.powerTmr_Tick);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1168, 681);
+            this.ClientSize = new System.Drawing.Size(637, 369);
             this.DoubleBuffered = true;
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -55,6 +62,7 @@
         #endregion
 
         private System.Windows.Forms.Timer tmr;
+        private System.Windows.Forms.Timer powerTmr;
     }
 }
 

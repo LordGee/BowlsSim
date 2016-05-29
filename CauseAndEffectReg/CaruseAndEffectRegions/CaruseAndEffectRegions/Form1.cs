@@ -21,7 +21,10 @@ namespace CaruseAndEffectRegions
         public SizeF bSize = new SizeF(50, 50);
         public float pow = 0;
         const float startX = 100;
-        const float startY = 500;
+        const float startY = 300;
+        GraphicsPath pth;
+        Region oMat, iMat;
+
         class theBowls
         {
             public int play;
@@ -38,6 +41,14 @@ namespace CaruseAndEffectRegions
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            e.Graphics.FillRegion(Brushes.White, oMat);
+            e.Graphics.FillRegion(Brushes.Black, iMat);
+            if (pbB != null)
+            {
+                e.Graphics.FillRegion(Brushes.PaleGoldenrod, pbB);
+                e.Graphics.FillRegion(Brushes.IndianRed, pbF);
+            }
+            
             foreach (theBowls _b in Bowls)
             {
                 if (_b.play == 1)
@@ -60,7 +71,6 @@ namespace CaruseAndEffectRegions
                 {
                     _c.coll = 0;
                 }
-                
             }
             foreach (theBowls _b in Bowls)
             {
@@ -77,8 +87,8 @@ namespace CaruseAndEffectRegions
                                     newDirect(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, _b.power);
                                     _b.power = pow;
                                     _b2.power = pow;
-                                    _b.newY = 0;
-                                    _b2.newY = 0;
+                                    //_b.newY = 0;
+                                    //_b2.newY = 0;
                                     _b.newY = passY;
                                     _b2.newY = passY;
                                     _b.coll = 1;
@@ -101,6 +111,7 @@ namespace CaruseAndEffectRegions
                     }
                     else
                     {
+                        
                         if (_b.power < 400)
                         {
                              if (_b.startY <= 0.00)
@@ -114,8 +125,7 @@ namespace CaruseAndEffectRegions
                         }
                         else if (_b.power < _b.power30)
                         {
-                            float dtt = _b.bowl.Y - startY;
-                            float tic = _b.power / 2; // Currently working on a calc the will make these if statements consistant
+                             // Currently working on a calc the will make these if statements consistant
                             if (_b.startY <= 0.00)
                             {
                                 _b.bias = 0.005;
@@ -125,10 +135,29 @@ namespace CaruseAndEffectRegions
                                 _b.bias = -0.005;
                             }
                         }
+                        //if (_b.power < _b.power30) // to be continued
+                        //{
+                        //    float dtt = 200;
+                        //    float tic = _b.power * 2;
+                        //    float res = (dtt / tic) / 2;
+                        //    if (_b.startY <= 0.00)
+                        //    {
+                        //        _b.bias = res;
+                        //    }
+                        //    else
+                        //    {
+                        //        _b.bias = -res;
+                        //    }
+                        //}
                         _b.newY += _b.bias;
                         _b.bowl.X = _b.bowl.X + 2;
                         _b.power = _b.power - 2;
                         _b.bowl.Y += (float)_b.newY;
+                    }
+                    if (_b.bowl.X > 1000) // testing a ditch effect
+                    {
+                        _b.bowl.Size = new SizeF(20, 20);
+                        _b.power = 0;
                     }
                     Refresh();
                 }
@@ -154,6 +183,7 @@ namespace CaruseAndEffectRegions
                 }
                 PointF bowlXY = new PointF(startX, startY);
                 drawNewBowl(bowlXY);
+                powerTmr.Start();
             }
 
         }
@@ -162,9 +192,9 @@ namespace CaruseAndEffectRegions
             newbowl = new theBowls();
             newbowl.bowl = new RectangleF(_xy, bSize);
             newbowl.play = thisPlayer;
-            newbowl.power = ran.Next(500, 2000);
+            newbowl.power = ran.Next(500, 1000);
             newbowl.power30 = newbowl.power / 3;
-            newbowl.newY = 0.5; //ran.NextDouble() * 2 - 1;
+            newbowl.newY = 0.5;// ran.NextDouble() * 2 - 1;
             newbowl.startY = newbowl.newY;
             newbowl.bias =  0.0;
             Bowls.Add(newbowl);
@@ -199,12 +229,61 @@ namespace CaruseAndEffectRegions
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            drawMat();
             gameLoop();
         }
         public void gameLoop()
         {
             thisPlayer = 2;
             tmr.Start();
+        }
+        Region pbB, pbF;
+        int count = 0;
+        bool test = false;
+        private void powerTmr_Tick(object sender, EventArgs e)
+        {
+            Rectangle pbBack = new Rectangle(0,0,this.ClientSize.Width,50);
+            pth = new GraphicsPath();
+            pth.AddRectangle(pbBack);
+            pbB = new Region(pth);
+            
+            if (count > this.ClientSize.Width)
+            {
+                test = true;
+                count -= 3;
+            }
+            else if (count < 10)
+            {
+                test = false;
+                count += 3;
+            }
+            if (!test)
+            {
+                count += 3;
+            }
+            else
+            {
+                count -= 3;
+            }
+            
+            Rectangle pbFront = new Rectangle(0, 0, count, 50);
+            pth = new GraphicsPath();
+            pth.AddRectangle(pbFront);
+            pbF = new Region(pth);
+            Refresh();
+        }
+
+        public void drawMat()
+        {
+            Rectangle outerMat = new Rectangle((int)startX - 50, (int)startY - (100 / 2), 200, 100);
+            pth = new GraphicsPath();
+            pth.AddRectangle(outerMat);
+            oMat = new Region(pth);
+
+            Rectangle innerMat = new Rectangle((int)startX - 40, (int)startY - (100 / 2) + 10, 180, 80);
+            pth = new GraphicsPath();
+            pth.AddRectangle(innerMat);
+            iMat = new Region(pth);
         }
     }
 }
