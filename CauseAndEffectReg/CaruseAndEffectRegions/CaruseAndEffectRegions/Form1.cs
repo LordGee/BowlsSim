@@ -243,28 +243,26 @@ namespace CaruseAndEffectRegions
         bool test = false;
         private void powerTmr_Tick(object sender, EventArgs e)
         {
-            Rectangle pbBack = new Rectangle(0,0,this.ClientSize.Width,50);
+            Rectangle pbBack = new Rectangle(0, 0, ClientSize.Width, 50);
             pth = new GraphicsPath();
             pth.AddRectangle(pbBack);
             pbB = new Region(pth);
             
-            if (count > this.ClientSize.Width)
+            if (count > ClientSize.Width)
             {
                 test = true;
-                count -= 3;
             }
             else if (count < 10)
             {
                 test = false;
-                count += 3;
             }
             if (!test)
             {
-                count += 3;
+                count += 5;
             }
             else
             {
-                count -= 3;
+                count -= 5;
             }
             
             Rectangle pbFront = new Rectangle(0, 0, count, 50);
