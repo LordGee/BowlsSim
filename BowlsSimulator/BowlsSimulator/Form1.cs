@@ -35,11 +35,6 @@ namespace BowlsSimulator
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
         {
             // Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
-<<<<<<< HEAD
-           
-=======
-            
->>>>>>> origin/master
             e.Graphics.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
             e.Graphics.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
             e.Graphics.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
@@ -61,11 +56,7 @@ namespace BowlsSimulator
         }
         public void drawButtons()
         {
-<<<<<<< HEAD
             Rectangle exitR = new Rectangle((screenWidth - 300), (screenHeight - (bannerHeight / 2) - (fs / 2)), 250, 50);
-=======
-            Rectangle exitR = new Rectangle((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2), 250, 50);
->>>>>>> origin/master
             pth = new GraphicsPath();
             pth.AddRectangle(exitR);
             exitButton = new Region(pth);
@@ -80,18 +71,11 @@ namespace BowlsSimulator
         private void frmMainGame_MouseMove(object sender, MouseEventArgs e)
         {   
             if (exitButton.IsVisible(e.Location) && !testColour)
-<<<<<<< HEAD
-            {
-                    exitColour = Brushes.Gold;
-                    Refresh();
-                    testColour = true;
-             
-=======
             { // if the mouse cursor hovers over the exit button change the colour to Gold
                 exitColour = Brushes.Gold;
                 Refresh();
                 testColour = true;
->>>>>>> origin/master
+
             }
             else if (testColour && !exitButton.IsVisible(e.Location))
             { // if it's anywhere else change it back to Red
@@ -135,10 +119,7 @@ namespace BowlsSimulator
         {
             screenWidth = this.ClientSize.Width; // populates variable screenWidth with the actual current form width
             screenHeight = this.ClientSize.Height; // populates variable screenHeight with the actual current form height
-<<<<<<< HEAD
-=======
             // the next two items need to be loaded before the paint event //
->>>>>>> origin/master
             gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area // increased from the design to 200 from 100 to make the game area bigger then the banners
             bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
         }
