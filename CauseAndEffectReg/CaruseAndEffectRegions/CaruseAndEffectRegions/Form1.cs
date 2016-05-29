@@ -21,13 +21,14 @@ namespace CaruseAndEffectRegions
         public SizeF bSize = new SizeF(50, 50);
         public float pow = 0;
         const float startX = 100;
-        const float startY = 600;
+        const float startY = 500;
         class theBowls
         {
             public int play;
             public RectangleF bowl;
             public float power;
             public double newY;
+            public double startY;
             public int coll;
         }
         theBowls newbowl = new theBowls();
@@ -67,7 +68,7 @@ namespace CaruseAndEffectRegions
                     {
                         if (_b != _b2 /*&& _b.coll == 0*/)
                         {
-                            if (circleCollide(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, (int)bSize.Height / 2, (int)bSize.Width / 2))
+                            if (circleCollide(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, (int)bSize.Height / 2, (int)bSize.Width / 2)) // math provided by Glenn
                             {
                                 if (_b.coll == 0 || _b2.coll == 0)
                                 {
@@ -98,12 +99,18 @@ namespace CaruseAndEffectRegions
                     }
                     else
                     {
+                        if (_b.startY <= 0)
+                        {
+                            _b.newY = _b.newY + 0.005;
+                        }
+                        else if (_b.startY > 0)
+                        {
+                            _b.newY = _b.newY - 0.005;
+                        }
                         _b.bowl.X = _b.bowl.X + 2;
                         _b.power = _b.power - 2;
                         _b.bowl.Y += (float)_b.newY;
                     }
-
-
                     Refresh();
                 }
             }
@@ -137,7 +144,8 @@ namespace CaruseAndEffectRegions
             newbowl.bowl = new RectangleF(_xy, bSize);
             newbowl.play = thisPlayer;
             newbowl.power = ran.Next(500, 1000);
-            newbowl.newY = ran.NextDouble() - 0.5;
+            newbowl.newY = ran.NextDouble() * 2 - 1;
+            newbowl.startY = newbowl.newY;
             Bowls.Add(newbowl);
         }
 
