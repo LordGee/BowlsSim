@@ -27,9 +27,11 @@ namespace CaruseAndEffectRegions
             public int play;
             public RectangleF bowl;
             public float power;
+            public float power30;
             public double newY;
             public double startY;
             public int coll;
+            public double bias;
         }
         theBowls newbowl = new theBowls();
         List<theBowls> Bowls = new List<theBowls>();
@@ -48,7 +50,7 @@ namespace CaruseAndEffectRegions
                 }
             }
         }
-        public bool collide = false;
+        //public bool collide = false;
         public int thisPlayer = 1;
         private void tmr_Tick(object sender, EventArgs e)
         {
@@ -99,14 +101,31 @@ namespace CaruseAndEffectRegions
                     }
                     else
                     {
-                        if (_b.startY <= 0)
+                        if (_b.power < 400)
                         {
-                            _b.newY = _b.newY + 0.005;
+                             if (_b.startY <= 0.00)
+                            {
+                                _b.bias = 0.014;
+                            }
+                            else
+                            {
+                                _b.bias = -0.014;
+                            }
                         }
-                        else if (_b.startY > 0)
+                        else if (_b.power < _b.power30)
                         {
-                            _b.newY = _b.newY - 0.005;
+                            float dtt = _b.bowl.Y - startY;
+                            float tic = _b.power / 2; // Currently working on a calc the will make these if statements consistant
+                            if (_b.startY <= 0.00)
+                            {
+                                _b.bias = 0.005;
+                            }
+                            else
+                            {
+                                _b.bias = -0.005;
+                            }
                         }
+                        _b.newY += _b.bias;
                         _b.bowl.X = _b.bowl.X + 2;
                         _b.power = _b.power - 2;
                         _b.bowl.Y += (float)_b.newY;
@@ -133,7 +152,7 @@ namespace CaruseAndEffectRegions
                 {
                     thisPlayer = 1;
                 }
-                PointF bowlXY = new PointF(startX, 500);
+                PointF bowlXY = new PointF(startX, startY);
                 drawNewBowl(bowlXY);
             }
 
@@ -143,9 +162,11 @@ namespace CaruseAndEffectRegions
             newbowl = new theBowls();
             newbowl.bowl = new RectangleF(_xy, bSize);
             newbowl.play = thisPlayer;
-            newbowl.power = ran.Next(500, 1000);
-            newbowl.newY = ran.NextDouble() * 2 - 1;
+            newbowl.power = ran.Next(500, 2000);
+            newbowl.power30 = newbowl.power / 3;
+            newbowl.newY = 0.5; //ran.NextDouble() * 2 - 1;
             newbowl.startY = newbowl.newY;
+            newbowl.bias =  0.0;
             Bowls.Add(newbowl);
         }
 
@@ -162,7 +183,15 @@ namespace CaruseAndEffectRegions
             double _toa = _O / _A;
             double _deg = Math.Atan(_toa)/* * 180 / Math.PI*/;
             passY = Math.Tan(_deg) * 2;
-            pow = _p / 2;
+            if (passY > 4)
+            {
+                passY = 4;
+            }
+            else if (passY < -4)
+            {
+                passY = -4;
+            }
+            pow = _p / 2.5f;
 
             // double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2));
             // double _LX = Math.Abs(_X1 - _X2) / 2;
