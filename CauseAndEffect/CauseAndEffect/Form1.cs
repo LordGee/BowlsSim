@@ -21,17 +21,29 @@ namespace CauseAndEffect
             InitializeComponent();
         }
         // public variables
-        public Rectangle bowl1, bowl2;
-        public Region bowl3, bowl4;
+        public RectangleF bowl1, bowl2;
+        
         public GraphicsPath pth;
-        public Point bowlA = new Point(0, 100);
-        public Point bowlB = new Point(300,150);
-        public int bowlAV = 380;
+        int sAx = 0;
+        int sAy = 100;
+        int sBy = 150;
+        int sBx = 300;
+        public PointF bowlA = new Point(0, 100);
+        public PointF bowlB = new Point(300,150);
+        public int bowlAV = 800;
         public int bowlW = 75;
+        public int bowlBV = 0;
+        int count = 0;
 
+        class theBowls
+        {
+            public Region bowl;
+        }
+        theBowls b = new theBowls();
+        List<theBowls> newBowl = new List<theBowls>();
         private void Form1_Load(object sender, EventArgs e)
         {
-            tmrAnimate.Interval = 30;
+            tmrAnimate.Interval = 10;
             tmrAnimate.Start();
         }
         private void Form1_Paint(object sender, PaintEventArgs e)
@@ -52,30 +64,46 @@ namespace CauseAndEffect
                     {
                         bowlA.X = bowlA.X + 2;
                         bowlAV--;
-                        bowlA.Y -= (int)newY1;
-                }
+                        bowlA.Y -= (float)newY1;
+                        if (bowlBV > 0 && !coll)
+                        {
+                            bowlB.X = bowlB.X + 2;
+                            bowlBV--;
+                            bowlB.Y += (float)newY1;
+                        }
+                    }
                     else
                     {
-                        newDirect(bowl1.X, bowl1.Y, bowl2.X, bowl2.Y);
+                    float b1X = bowlA.X + (bowlW / 2);
+                    float b1Y = bowlA.Y + (bowlW / 2);
+                    float b2X = bowlB.X + (bowlW / 2);
+                    float b2Y = bowlB.Y + (bowlW / 2);
+                    newDirect(b1X, b1Y, b2X, b2Y);
                         bowlAV--;
                         bowlA.X = bowlA.X + 2;
-                        bowlA.Y -= (int)newY1;
+                        bowlA.Y -= (float)newY1;
+                        bowlB.X = bowlB.X + 2;
+                        bowlBV--;
+                        bowlB.Y += (float)newY1;
                         coll = false;
+                    once = true;
                     }
 
                 }
                 else
                 {
                     tmrAnimate.Stop();
+                    again();
                 }
             
-            bowl1 = new Rectangle(bowlA.X, bowlA.Y, bowlW, bowlW);
-            bowl2 = new Rectangle(bowlB.X, bowlB.Y, bowlW, bowlW);
+            
+            bowl2 = new RectangleF(bowlB.X, bowlB.Y, bowlW, bowlW);
+            bowl1 = new RectangleF(bowlA.X, bowlA.Y, bowlW, bowlW);
             //if (bowl1.IntersectsWith(bowl2))
             //{
             //    tmrAnimate.Stop();
             //}
-            if (circleCollide(bowl1.X, bowl1.Y, bowl2.X, bowl2.Y, bowlW /2, bowlW / 2))
+            if (circleCollide(bowl1.X, bowl1.Y, bowl2.X, bowl2.Y, bowlW /2, bowlW / 2) && !once)
             {
                 coll = true;
             }
@@ -85,24 +113,44 @@ namespace CauseAndEffect
             }
             
         }
+        public void again()
+        {
+            count++;
+            bowlA.X = sAx;
+            bowlA.Y = sAy + count;
+            bowlB.X = sBx;
+            bowlB.Y = sBy;
+            bowlAV = 800;
+            bowlBV = 0;
+            newY1 = 0;
+            coll = false;
+            once = false;
+            Refresh();
+            tmrAnimate.Start();
+        }
+        public bool once = false;
         public int newY;
-        public bool circleCollide(int _X1, int _Y1, int _X2, int _Y2, int _r1, int _r2)
+        public bool circleCollide(float _X1, float _Y1, float _X2, float _Y2, int _r1, int _r2)
         {
             return (Math.Sqrt(Math.Pow(Math.Abs(_X1 - _X2), 2) + Math.Pow(Math.Abs(_Y1 - _Y2), 2)) <= (_r1 + _r2));
         }
         public double newY1;
-        public void newDirect(int _X1, int _Y1, int _X2, int _Y2)
+        public void newDirect(float _X1, float _Y1, float _X2, float _Y2)
         {
-            double _A = Math.Abs(_X1 - _X2);
-            double _O = Math.Abs(_Y1 - _Y2);
+            double _A = _X1 - _X2;
+            double _O = _Y1 - _Y2;
+            
+            double _toa = _O / _A;
+            double _deg = Math.Atan(_toa)/* * 180 / Math.PI*/;
+            // _deg = Math.Abs(_deg);
+            newY1 = Math.Tan(_deg) * 2;
+            bowlAV = bowlAV / 2;
+            bowlBV = bowlAV;
+            // newY1 = Math.Abs(newY1 - _Y1);
+
             // double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2));
             // double _LX = Math.Abs(_X1 - _X2) / 2;
             // double _LY = Math.Abs(_Y1 - _Y2) / 2;
-            double _toa = Math.Abs(_O / _A);
-            double _deg = Math.Atan(_toa) * 180 / Math.PI;
-            _deg = Math.Abs(_deg + 90 - 180);
-            newY1 = Math.Tan(_deg) * (_X1 + 2);
-            // newY1 = Math.Abs(newY1 - _Y1);
         }
         
     }
