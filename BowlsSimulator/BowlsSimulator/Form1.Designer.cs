@@ -32,8 +32,9 @@
             this.powerTime = new System.Windows.Forms.Timer(this.components);
             this.xHairTime = new System.Windows.Forms.Timer(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.colorDialog2 = new System.Windows.Forms.ColorDialog();
+            this.playerColour = new System.Windows.Forms.ColorDialog();
             this.colorDialog3 = new System.Windows.Forms.ColorDialog();
+            this.colorDialog4 = new System.Windows.Forms.ColorDialog();
             this.SuspendLayout();
             // 
             // powerTime
@@ -69,8 +70,9 @@
         private System.Windows.Forms.Timer powerTime;
         private System.Windows.Forms.Timer xHairTime;
         private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.ColorDialog colorDialog2;
+        private System.Windows.Forms.ColorDialog playerColour;
         private System.Windows.Forms.ColorDialog colorDialog3;
+        private System.Windows.Forms.ColorDialog colorDialog4;
     }
 }
 
