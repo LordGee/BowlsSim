@@ -57,8 +57,9 @@ namespace BowlsSimulator
         public Brush p1Colour = Brushes.DarkBlue;
         public bool game = true; // starts the game
         public bool crossHair = false; // if this is true wil redraw graphic
-        public Region xHair1, xHair2;
-        
+        public Region xHair1, xHair2; // define the cross hair regions
+        public double selectedY, selectedP; // temp storage for the Y co-ord and P Power Count
+
         class theBowls // The main dynamic class
         {
             public int play;
@@ -77,8 +78,8 @@ namespace BowlsSimulator
         {
             if (game)
             {
+
                 startCrossHair();
-             
             }
         }
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
@@ -118,7 +119,7 @@ namespace BowlsSimulator
                     e.Graphics.FillEllipse(Brushes.Red, _b.bowl);
                 }
             }
-            if (crossHair && xHair1 != null)
+            if (crossHair && !xHairClick && xHair1 != null)
             {
                 e.Graphics.FillRegion(Brushes.Yellow, xHair1);
                 e.Graphics.FillRegion(Brushes.Yellow, xHair2);
@@ -172,7 +173,13 @@ namespace BowlsSimulator
             xHairClick = false;
             xHairTime.Start();
         }
-        
+        public bool powerClick = true;
+        public void startPowerBar()
+        {
+            powerClick = false;
+            powerTime.Start();
+        }
+
         private void frmMainGame_MouseMove(object sender, MouseEventArgs e)
         {   
             
@@ -214,10 +221,30 @@ namespace BowlsSimulator
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
                 MessageBox.Show("Do you want to choose a Player");
+
+                pickColor();
             }
             else if (e.Button == MouseButtons.Left && oMat.IsVisible(e.Location))
             {
-                pickColor();
+
+            
+                if (!xHairClick)
+                {
+                    selectedY = xHairY;
+                    xHairClick = true;
+                    powerClick = false;
+                    xHairTime.Stop();
+                    startPowerBar();
+                    
+                }
+                else if (!powerClick && xHairClick)
+                {
+                    selectedP = powerCount;
+                    powerClick = true;
+                    powerTime.Stop();
+                    startBowl();
+                }
+
             }
         }
         public void pickColor()// it is a funtion to pick up the colour
@@ -229,6 +256,8 @@ namespace BowlsSimulator
         }
         private void powerTime_Tick(object sender, EventArgs e)
         {
+            if (!powerClick)
+            {
                 if (powerCount > ClientSize.Width)
                 {
                     powerTest = true;
@@ -250,6 +279,11 @@ namespace BowlsSimulator
                 pth.AddRectangle(pbFront);
                 pbF = new Region(pth);
                 Refresh();
+            }
+        }
+        private void gameLoopy_Tick(object sender, EventArgs e)
+        {
+            // redundent, this didn't quite work the way I hoped
         }
 
         public void screenSize()
@@ -322,6 +356,10 @@ namespace BowlsSimulator
                 xHair2 = new Region(pth);
                 Refresh();
             }
+        }
+        public void startBowl()
+        {
+
         }
     }
 }
