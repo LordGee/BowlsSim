@@ -120,8 +120,8 @@ namespace BowlsSimulator
             }
             if (crossHair && xHair1 != null)
             {
-                e.Graphics.FillRegion(Brushes.Black, xHair1);
-                e.Graphics.FillRegion(Brushes.Black, xHair2);
+                e.Graphics.FillRegion(Brushes.Yellow, xHair1);
+                e.Graphics.FillRegion(Brushes.Yellow, xHair2);
             }
         }
 
