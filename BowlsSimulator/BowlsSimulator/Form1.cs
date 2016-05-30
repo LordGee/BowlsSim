@@ -215,15 +215,22 @@ namespace BowlsSimulator
 
         private void frmMainGame_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left && exitButton.IsVisible(e.Location))
+            if (e.Button == MouseButtons.Left && exitButton.IsVisible(e.Location))// setting up an exit button
             {
                 Application.Exit();
             }
-            else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
+            else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location)) // setting up an option button
             {
-                MessageBox.Show("Do you want to choose a Player");
-
-                pickColor();
+                DialogResult dr = MessageBox.Show("Do you want to Change the colour of player bowls?\n\nClick YES for Player 1\n\nClick NO for Player 2", "Change player colour", MessageBoxButtons.YesNoCancel);
+                if(dr == DialogResult.Yes)
+                {
+                    pickColor(p1Colour);
+                }
+                else if(dr == DialogResult.No)
+                {
+                    pickColor(p2Colour);
+                }
+                
             }
             else if (e.Button == MouseButtons.Left && oMat.IsVisible(e.Location))
             {
@@ -248,11 +255,11 @@ namespace BowlsSimulator
 
             }
         }
-        public void pickColor()// it is a funtion to pick up the colour
+        public void pickColor(Brush _b)// setting up a funtion to pick up the colour
         {
             if (playerColour.ShowDialog() == DialogResult.OK)
             {
-                exitColour = new SolidBrush(playerColour.Color);
+                _b = new SolidBrush(playerColour.Color);
             }
         }
         private void powerTime_Tick(object sender, EventArgs e)
