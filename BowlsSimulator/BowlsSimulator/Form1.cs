@@ -68,6 +68,7 @@ namespace BowlsSimulator
         public bool powerClick = true;
         public bool xHairClick, xHairTest;
         public bool bowlConfirm;
+        public int p1score, p2score, currEnd, currBowl, gameNo; // current stats
 
         class theBowls // The main dynamic class
         {
@@ -91,7 +92,7 @@ namespace BowlsSimulator
             drawButtons(); // draws regions for generic layout
             drawJack(); // draws the jack to the screen
             drawMat(); // defines the mat region that is drawn to the canvas
-            gameLoop(); // starts the game controller
+            newGame(); // starts and resets the game controller
         }
 
         public void screenSize()
@@ -172,13 +173,16 @@ namespace BowlsSimulator
             
             foreach (theBowls _b in Bowls)
             {
-                if (_b.play == 1)
+                if (_b.end == currEnd)
                 {
-                    g.FillEllipse(p1Colour, _b.bowl);
-                }
-                else if (_b.play == 2)
-                {
-                    g.FillEllipse(p2Colour, _b.bowl);
+                    if (_b.play == 1)
+                    {
+                        g.FillEllipse(p1Colour, _b.bowl);
+                    }
+                    else if (_b.play == 2)
+                    {
+                        g.FillEllipse(p2Colour, _b.bowl);
+                    }
                 }
             }
             g.FillEllipse(Brushes.White, jack);
@@ -263,6 +267,21 @@ namespace BowlsSimulator
             {
                 _b = new SolidBrush(playerColour.Color);
             }
+        }
+
+        /// <summary>
+        /// This is where the actual game mechanics begins!!!!
+        /// </summary>
+
+        public void newGame()
+        {
+            // reset variables ready for new game
+            p1score = 0;
+            p2score = 0;
+            currEnd = 1;
+            currBowl = 1;
+            gameNo += 1;
+            gameLoop();
         }
 
         public void gameLoop()
@@ -375,6 +394,7 @@ namespace BowlsSimulator
             newbowl.newY = passY;
             newbowl.startY = newbowl.newY;
             newbowl.bias = 0.0;
+            newbowl.end = currEnd;
             Bowls.Add(newbowl);
         }
 
@@ -511,6 +531,15 @@ namespace BowlsSimulator
                     {
                         thisPlayer = 1;
                     }
+                    currBowl++;
+                    if (currBowl > 4)
+                    {
+                        currEnd++;
+                        currBowl = 1;
+                        //////// work out score here
+                    }
+                    bowlTime.Stop();
+                    gameLoop();
                 }
             }
         }
