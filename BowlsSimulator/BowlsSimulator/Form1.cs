@@ -233,10 +233,9 @@ namespace BowlsSimulator
             }
         }
         public void pickColor()
-            {
-        
-        
-            }    
+        {
+           
+        }    
 
         private void powerTime_Tick(object sender, EventArgs e)
         {
