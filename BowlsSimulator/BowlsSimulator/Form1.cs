@@ -213,11 +213,11 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
-                pickColor(); 
+                MessageBox.Show("Do you want to choose a Player");
             }
             else if (e.Button == MouseButtons.Left && oMat.IsVisible(e.Location))
             {
-                
+                pickColor();
             }
         }
         public void pickColor()// it is a funtion to pick up the colour
