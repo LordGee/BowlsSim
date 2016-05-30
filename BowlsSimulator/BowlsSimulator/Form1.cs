@@ -29,7 +29,7 @@ namespace BowlsSimulator
         public int screenWidth, screenHeight; // Varable to hold the size of the form maximised on load
         public int bannerHeight, gameHeight; // Variables to gold the height of the game area and the heaight for the header and footers.
         public Font ff; // Font variable that holds the main font that will be used throughout the application
-        public int ditchW=30;// this will be the value of the width for the ditch
+        public int ditchW = 30;// this will be the value of the width for the ditch
         public Region exitButton;
         public Brush exitColour = Brushes.DarkRed;
         public GraphicsPath pth;
@@ -52,9 +52,12 @@ namespace BowlsSimulator
         public Brush continueColour = Brushes.DarkGreen;
         public bool launch = true;
         public int powerInterval = 30;
-        public int powerSpeed = 10;
+        public int gameSpeed = 5;
         public Brush p2Colour = Brushes.DarkRed;
         public Brush p1Colour = Brushes.DarkBlue;
+        public bool game = true; // starts the game
+        public bool crossHair = false; // if this is true wil redraw graphic
+        public Region xHair1, xHair2;
 
         class theBowls // The main dynamic class
         {
@@ -70,10 +73,19 @@ namespace BowlsSimulator
         theBowls newbowl = new theBowls();
         List<theBowls> Bowls = new List<theBowls>(); // generates the list of the dynamic class
 
+        public void gameLoop()
+        {
+            if (game)
+            {
+                startCrossHair();
+             
+            }
+        }
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
-             Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
+            Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
+            g.FillRectangle(Brushes.DarkGreen, 0, 0, screenWidth, screenHeight);
             g.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
             g.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
             g.FillRectangle(Brushes.Brown, 0, bannerHeight, ditchW, gameHeight); // draw the left ditch
@@ -106,7 +118,11 @@ namespace BowlsSimulator
                     e.Graphics.FillEllipse(Brushes.Red, _b.bowl);
                 }
             }
-            
+            if (crossHair && xHair1 != null)
+            {
+                e.Graphics.FillRegion(Brushes.Black, xHair1);
+                e.Graphics.FillRegion(Brushes.Black, xHair2);
+            }
         }
 
         private void frmMainGame_Load(object sender, EventArgs e)
@@ -114,10 +130,11 @@ namespace BowlsSimulator
             screenSize(); // executes function to find out the form width and height at launch
             // customFont(); // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
             drawButtons(); // draws regions for generic layout
-            
+
             drawMat(); // defines the mat region that is drawn to the canvas
-            powerTime.Interval = powerInterval;
-            powerTime.Start();
+            gameLoop();
+            //powerTime.Interval = powerInterval;
+            //powerTime.Start();
         }
         public void drawButtons()
         {
@@ -145,11 +162,20 @@ namespace BowlsSimulator
             iMat = new Region(pth);
             
         }
+
+        public int xHairY;
+        public void startCrossHair()
+        {
+            
+            xHairY = bannerHeight + (gameHeight / 2);
+            
+            xHairClick = false;
+            xHairTime.Start();
+        }
         
-    
         private void frmMainGame_MouseMove(object sender, MouseEventArgs e)
         {   
-            /*
+            
             if (exitButton.IsVisible(e.Location) && !testExitColour)
             { // if the mouse cursor hovers over the exit button change the colour to Gold
                 exitColour = Brushes.Gold;
@@ -176,7 +202,7 @@ namespace BowlsSimulator
                 Refresh();
                 testOptionColour = false;
             } 
-            */
+            
         }
 
         private void frmMainGame_MouseClick(object sender, MouseEventArgs e)
@@ -188,6 +214,10 @@ namespace BowlsSimulator
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
                // Application.CommonAppDataPath 
+            }
+            else if (e.Button == MouseButtons.Left && oMat.IsVisible(e.Location))
+            {
+
             }
         }
 
@@ -203,11 +233,11 @@ namespace BowlsSimulator
                 }
                 if (!powerTest)
                 {
-                    powerCount += powerSpeed;
+                    powerCount += gameSpeed;
                 }
                 else
                 {
-                    powerCount -= powerSpeed;
+                    powerCount -= gameSpeed;
                 }
                 Rectangle pbFront = new Rectangle(0, bannerHeight + gameHeight, powerCount, 30);
                 pth = new GraphicsPath();
@@ -252,6 +282,40 @@ namespace BowlsSimulator
                 passY = -4;
             }
             pow = _p / 2.5f;
+        }
+        public bool xHairClick, xHairTest;
+        
+        private void xHairTime_Tick(object sender, EventArgs e)
+        {
+            if (!xHairClick)
+            {
+                crossHair = true;
+                if (xHairY > bannerHeight + gameHeight - 45)
+                {
+                    xHairTest = true;
+                }
+                else if (xHairY < bannerHeight + 15 )
+                {
+                    xHairTest = false;
+                }
+                if (!xHairTest)
+                {
+                    xHairY += gameSpeed;
+                }
+                else
+                {
+                    xHairY -= gameSpeed;
+                }
+                Rectangle hair1 = new Rectangle(screenWidth / 2, xHairY, 2, 30);
+                Rectangle hair2 = new Rectangle((screenWidth / 2) - 14, xHairY + 14, 30, 2);
+                pth = new GraphicsPath();
+                pth.AddRectangle(hair1);
+                xHair1 = new Region(pth);// adding the path to the region object
+                pth = new GraphicsPath();
+                pth.AddRectangle(hair2);
+                xHair2 = new Region(pth);
+                Refresh();
+            }
         }
     }
 }

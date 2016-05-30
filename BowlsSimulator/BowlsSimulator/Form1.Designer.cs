@@ -30,12 +30,18 @@
         {
             this.components = new System.ComponentModel.Container();
             this.powerTime = new System.Windows.Forms.Timer(this.components);
+            this.xHairTime = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // powerTime
             // 
             this.powerTime.Interval = 10;
             this.powerTime.Tick += new System.EventHandler(this.powerTime_Tick);
+            // 
+            // xHairTime
+            // 
+            this.xHairTime.Interval = 10;
+            this.xHairTime.Tick += new System.EventHandler(this.xHairTime_Tick);
             // 
             // frmMainGame
             // 
@@ -44,14 +50,13 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(460, 309);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmMainGame";
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmMainGame_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.frmMainGame_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.frmMainGame_MouseClick);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMainGame_MouseMove);
             this.ResumeLayout(false);
 
         }
@@ -59,6 +64,7 @@
         #endregion
 
         private System.Windows.Forms.Timer powerTime;
+        private System.Windows.Forms.Timer xHairTime;
     }
 }
 
