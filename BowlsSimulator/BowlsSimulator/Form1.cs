@@ -9,6 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading; // use for creating seperate theads of functions.
+
+
 
 namespace BowlsSimulator
 {
@@ -17,6 +20,8 @@ namespace BowlsSimulator
         public frmMainGame()
         {
             InitializeComponent();
+            this.SetStyle(ControlStyles.DoubleBuffer | ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            this.UpdateStyles();
         }
 
         // Public Variables Go Here
@@ -62,24 +67,25 @@ namespace BowlsSimulator
 
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
         {
-            // Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
-            e.Graphics.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
-            e.Graphics.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
-            e.Graphics.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
-            e.Graphics.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
-            e.Graphics.FillRectangle(Brushes.Brown, 0,bannerHeight, ditchW,gameHeight); // draw the left ditch
-            e.Graphics.FillRectangle(Brushes.Brown, screenWidth - ditchW, bannerHeight, ditchW, gameHeight); // draw the right ditch
-            e.Graphics.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
-            e.Graphics.FillRegion(Brushes.Transparent, exitButton);
-            e.Graphics.FillRegion(Brushes.Transparent, optionsButtons);
-            e.Graphics.FillRegion(Brushes.White, oMat);
-            e.Graphics.FillRegion(Brushes.Black, iMat);
-            e.Graphics.DrawString("Two Player Game", ff, continueColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
+            Graphics g = e.Graphics;
+            Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
+            g.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
+            g.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
+            g.FillRectangle(Brushes.Brown, 0, bannerHeight, ditchW, gameHeight); // draw the left ditch
+            g.FillRectangle(Brushes.Brown, screenWidth - ditchW, bannerHeight, ditchW, gameHeight); // draw the right ditch
+            g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
+            g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
+            g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
+            g.DrawString("Two Player Game", ff, continueColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
+            g.FillRegion(Brushes.Transparent, exitButton);
+            g.FillRegion(Brushes.Transparent, optionsButtons);
+            g.FillRegion(Brushes.White, oMat);
+            g.FillRegion(Brushes.Black, iMat);
             if (pbF != null)
             {
-                e.Graphics.FillRegion(Brushes.LightSkyBlue, pbF);
+                g.FillRegion(Brushes.LightSkyBlue, pbF);
             }
-
+            /*
             foreach (theBowls _b in Bowls)
             {
                 if (_b.play == 1)
@@ -91,15 +97,15 @@ namespace BowlsSimulator
                     e.Graphics.FillEllipse(Brushes.Red, _b.bowl);
                 }
             }
-
+            */
         }
 
         private void frmMainGame_Load(object sender, EventArgs e)
         {
             screenSize(); // executes function to find out the form width and height at launch
             drawButtons(); // draws regions for generic layout
-            customFont(); // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
             drawMat(); // defines the mat region that is drawn to the canvas
+            customFont(); // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
             powerTime.Start();
         }
         public void drawButtons()
@@ -114,6 +120,7 @@ namespace BowlsSimulator
             optionsButtons = new Region(pth);
 
         }
+
         public void drawMat()
         {
             Rectangle outerMat = new Rectangle(ditchW * 2, gameHeight + bannerHeight - (gameHeight / 2) - 50, 200, 100);
@@ -125,11 +132,13 @@ namespace BowlsSimulator
             pth = new GraphicsPath();
             pth.AddRectangle(innerMat);
             iMat = new Region(pth);
+            
         }
         
     
         private void frmMainGame_MouseMove(object sender, MouseEventArgs e)
         {   
+            /*
             if (exitButton.IsVisible(e.Location) && !testExitColour)
             { // if the mouse cursor hovers over the exit button change the colour to Gold
                 exitColour = Brushes.Gold;
@@ -156,6 +165,7 @@ namespace BowlsSimulator
                 Refresh();
                 testOptionColour = false;
             } 
+            */
         }
 
         private void frmMainGame_MouseClick(object sender, MouseEventArgs e)
@@ -172,27 +182,27 @@ namespace BowlsSimulator
 
         private void powerTime_Tick(object sender, EventArgs e)
         {
-            if (powerCount > ClientSize.Width)
-            {
-                powerTest = true;
-            }
-            else if (powerCount < 10)
-            {
-                powerTest = false;
-            }
-            if (!powerTest)
-            {
-                powerCount += 5;
-            }
-            else
-            {
-                powerCount -= 5;
-            }
-            Rectangle pbFront = new Rectangle(0, bannerHeight + gameHeight, powerCount, 30);
-            pth = new GraphicsPath();
-            pth.AddRectangle(pbFront);
-            pbF = new Region(pth);
-            Refresh();
+                if (powerCount > ClientSize.Width)
+                {
+                    powerTest = true;
+                }
+                else if (powerCount < 10)
+                {
+                    powerTest = false;
+                }
+                if (!powerTest)
+                {
+                    powerCount += 5;
+                }
+                else
+                {
+                    powerCount -= 5;
+                }
+                Rectangle pbFront = new Rectangle(0, bannerHeight + gameHeight, powerCount, 30);
+                pth = new GraphicsPath();
+                pth.AddRectangle(pbFront);
+                pbF = new Region(pth);
+                Refresh();
         }
 
         public void screenSize()
@@ -215,7 +225,6 @@ namespace BowlsSimulator
         {
             return (Math.Sqrt(Math.Pow(Math.Abs(_X1 - _X2), 2) + Math.Pow(Math.Abs(_Y1 - _Y2), 2)) <= (_r1 + _r2));
         }
-
         public void newDirect(float _X1, float _Y1, float _X2, float _Y2, float _p)
         {
             double _A = _X1 - _X2;
