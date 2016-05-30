@@ -60,18 +60,19 @@
             // 
             // frmMainGame
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(460, 309);
+            this.ClientSize = new System.Drawing.Size(843, 570);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmMainGame";
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmMainGame_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.frmMainGame_Paint);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.frmMainGame_MouseClick);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmMainGame_MouseMove);
             this.ResumeLayout(false);
 
         }
