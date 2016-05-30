@@ -55,14 +55,10 @@ namespace BowlsSimulator
         public int gameSpeed = 5;
         public Brush p2Colour = Brushes.DarkRed;
         public Brush p1Colour = Brushes.DarkBlue;
-<<<<<<< HEAD
         public bool game = true; // starts the game
         public bool crossHair = false; // if this is true wil redraw graphic
         public Region xHair1, xHair2;
-=======
         
->>>>>>> origin/master
-
         class theBowls // The main dynamic class
         {
             public int play;
@@ -136,17 +132,9 @@ namespace BowlsSimulator
             drawButtons(); // draws regions for generic layout
 
             drawMat(); // defines the mat region that is drawn to the canvas
-<<<<<<< HEAD
             gameLoop();
             //powerTime.Interval = powerInterval;
             //powerTime.Start();
-=======
-            powerTime.Interval = powerInterval;
-            powerTime.Start();
-            
-            
-            
->>>>>>> origin/master
         }
         public void drawButtons()
         {
