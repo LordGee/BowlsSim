@@ -30,6 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.powerTime = new System.Windows.Forms.Timer(this.components);
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.colorDialog2 = new System.Windows.Forms.ColorDialog();
+            this.colorDialog3 = new System.Windows.Forms.ColorDialog();
             this.SuspendLayout();
             // 
             // powerTime
@@ -44,7 +47,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(460, 309);
             this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frmMainGame";
             this.Text = "Form1";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -59,6 +62,9 @@
         #endregion
 
         private System.Windows.Forms.Timer powerTime;
+        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.ColorDialog colorDialog2;
+        private System.Windows.Forms.ColorDialog colorDialog3;
     }
 }
 

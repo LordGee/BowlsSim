@@ -55,6 +55,7 @@ namespace BowlsSimulator
         public int powerSpeed = 10;
         public Brush p2Colour = Brushes.DarkRed;
         public Brush p1Colour = Brushes.DarkBlue;
+        
 
         class theBowls // The main dynamic class
         {
@@ -118,6 +119,9 @@ namespace BowlsSimulator
             drawMat(); // defines the mat region that is drawn to the canvas
             powerTime.Interval = powerInterval;
             powerTime.Start();
+            
+            
+            
         }
         public void drawButtons()
         {
@@ -187,9 +191,14 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
-               // Application.CommonAppDataPath 
+               
             }
         }
+        public void pickColor()
+            {
+        
+        
+            }    
 
         private void powerTime_Tick(object sender, EventArgs e)
         {
