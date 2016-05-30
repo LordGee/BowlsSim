@@ -81,6 +81,7 @@ namespace BowlsSimulator
             public int coll;
             public double bias;
             public int end;
+            public double distance;
         }
         theBowls newbowl = new theBowls();
         List<theBowls> Bowls = new List<theBowls>(); // generates the list of the dynamic class
@@ -170,7 +171,6 @@ namespace BowlsSimulator
             {
                 g.FillRegion(Brushes.LightSkyBlue, pbF);
             }
-            
             foreach (theBowls _b in Bowls)
             {
                 if (_b.end == currEnd)
@@ -472,7 +472,7 @@ namespace BowlsSimulator
                         }
                         else
                         {
-                            if (_b.power < 200)
+                            if (_b.power < 100)
                             {
                                 if (_b.startY <= 0.00)
                                 {
@@ -491,23 +491,24 @@ namespace BowlsSimulator
                                 }
                                 else
                                 {
-                                    _b.bias = -0.005;
+                                    _b.bias = -0.002;
                                 }
                             }
-                            _b.newY += _b.bias;
-                            _b.bowl.X = _b.bowl.X + 2;
-                            _b.power = _b.power - 2;
+                            _b.newY += _b.bias; // plus the calculated bias to the next Y co-ord
+                            _b.bowl.X = _b.bowl.X + 2; // move the bowl another 2 pixels to the right
+                            _b.power = _b.power - 2; // reduce the amount of remaining power by 2x
                             _b.bowl.Y += (float)_b.newY;
                         }
                         if (_b.bowl.X > screenWidth - ditchW) // testing a ditch effect
                         {
-                            _b.bowl.Size = new SizeF(20, 20);
-                            _b.power = 0;
+                            _b.bowl.Size = new SizeF(20, 20); // make the bowl appear smaller if it is in the ditch
+                            _b.power = 0; // no power, can no longer move when in this area
                             _b.coll = 2;
                         }
                         if (jack.X > screenWidth - ditchW)
                         {
-                            jack.Size = new SizeF(8, 8);
+                            jack.Size = new SizeF(8, 8); // make the jack smaller if it is in the ditch
+                            jPower = 0; // no power, can no longer move when in this area
                         }
                         Refresh();
                     }
@@ -519,11 +520,12 @@ namespace BowlsSimulator
                     if (_t.power <= 0)
                     {
                         c++;
+                        _t.distance = calcDistance(_t.bowl.X, _t.bowl.Y, jack.X, jack.Y); // calculat the distance between the bowl and jack
                     }
                 }
-                if (c == l)
+                if (c == l) // determines if all the bowls have stoped moving
                 {
-                    if (thisPlayer == 1)
+                    if (thisPlayer == 1) // the following changes to the next player
                     {
                         thisPlayer = 2;
                     }
@@ -531,14 +533,15 @@ namespace BowlsSimulator
                     {
                         thisPlayer = 1;
                     }
-                    currBowl++;
-                    if (currBowl > 4)
+                    currBowl++; // move variable to the next bowl to be played
+                    if (currBowl > 4) // have all the bowls been played?
                     {
-                        currEnd++;
-                        currBowl = 1;
-                        //////// work out score here
+                        currEnd++; // move to the next end
+                        currBowl = 1; // reset first bowl to 1
+                        //////// work out score here //////////
                     }
                     bowlTime.Stop();
+                    drawJack(); // if the jack is moved off position, this will recenter it for the next end
                     gameLoop();
                 }
             }
@@ -565,6 +568,15 @@ namespace BowlsSimulator
                 passY = -4;
             }
             pow = _p / 2.5f;
+        }
+
+        public double calcDistance(float _X1, float _Y1, float _X2, float _Y2)
+        {
+            double _A = _X1 - _X2;
+            double _O = _Y1 - _Y2;
+            double _toa = _O / _A;
+            double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2));
+            return _H;
         }
 
         private void gameLoopy_Tick(object sender, EventArgs e)
