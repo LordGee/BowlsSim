@@ -36,6 +36,7 @@
             this.colorDialog3 = new System.Windows.Forms.ColorDialog();
             this.colorDialog4 = new System.Windows.Forms.ColorDialog();
             this.gameLoopy = new System.Windows.Forms.Timer(this.components);
+            this.bowlTime = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // powerTime
@@ -51,6 +52,11 @@
             // gameLoopy
             // 
             this.gameLoopy.Tick += new System.EventHandler(this.gameLoopy_Tick);
+            // 
+            // bowlTime
+            // 
+            this.bowlTime.Interval = 10;
+            this.bowlTime.Tick += new System.EventHandler(this.bowlTime_Tick);
             // 
             // frmMainGame
             // 
@@ -79,6 +85,7 @@
         private System.Windows.Forms.ColorDialog colorDialog3;
         private System.Windows.Forms.ColorDialog colorDialog4;
         private System.Windows.Forms.Timer gameLoopy;
+        private System.Windows.Forms.Timer bowlTime;
     }
 }
 

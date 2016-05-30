@@ -36,10 +36,10 @@ namespace BowlsSimulator
         public Region optionsButtons;
         public Brush optionColour = Brushes.DarkBlue;
         public Random ran = new Random();
-        public SizeF bSize = new SizeF(50, 50);
+        public SizeF bSize = new SizeF(30, 30);
         public float pow = 0;
-        public const float startX = 100;
-        public const float startY = 300;
+        public float startX = 100;
+        public float startY = 300;
         public GraphicsPath mpth;
         public Region oMat, iMat;
         public int thisPlayer = 1;
@@ -58,7 +58,8 @@ namespace BowlsSimulator
         public bool game = true; // starts the game
         public bool crossHair = false; // if this is true wil redraw graphic
         public Region xHair1, xHair2; // define the cross hair regions
-        public double selectedY, selectedP; // temp storage for the Y co-ord and P Power Count
+        public float selectedY, selectedP; // temp storage for the Y co-ord and P Power Count
+        public float centerY;
 
         class theBowls // The main dynamic class
         {
@@ -290,10 +291,14 @@ namespace BowlsSimulator
         {
             screenWidth = this.ClientSize.Width; // populates variable screenWidth with the actual current form width
             screenHeight = this.ClientSize.Height; // populates variable screenHeight with the actual current form height
-            // the next two items need to be loaded before the paint event //
+                                                   // the next two items need to be loaded before the paint event //
+            centerY = screenHeight / 2;
             gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area // increased from the design to 200 from 100 to make the game area bigger then the banners
             bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
+            startX = ditchW * 4;
+            startY = centerY;
         }
+
 
         public void customFont()
         {
@@ -357,9 +362,143 @@ namespace BowlsSimulator
                 Refresh();
             }
         }
+        public bool bowlConfirm;
         public void startBowl()
         {
+            
+            calcBowl();
+            PointF bowlXY = new PointF(startX, startY);
+            drawNewBowl(bowlXY);
+            bowlConfirm = true;
+            bowlTime.Start();
+        }
+        public void calcBowl()
+        {
+            double _A = startX - (screenWidth / 2);
+            double _O = startY - selectedY;
+            double _toa = _O / _A;
+            double _deg = Math.Atan(_toa);
+            passY = Math.Tan(_deg) * 2;
+        }
+        public void drawNewBowl(PointF _xy)
+        {
+            newbowl = new theBowls();
+            newbowl.bowl = new RectangleF(_xy, bSize);
+            newbowl.play = thisPlayer;
+            newbowl.power = selectedP;
+            newbowl.power30 = newbowl.power / 3;
+            newbowl.newY = passY;
+            newbowl.startY = newbowl.newY;
+            newbowl.bias = 0.0;
+            Bowls.Add(newbowl);
+        }
+        private void bowlTime_Tick(object sender, EventArgs e)
+        {
+            if (bowlConfirm)
+            {
+                foreach (theBowls _c in Bowls)
+                {
+                    if (_c.power <= 0)
+                    {
+                        _c.coll = 0;
+                    }
+                }
+                foreach (theBowls _b in Bowls)
+                {
+                    if (_b.power > 0)
+                    {
+                        foreach (theBowls _b2 in Bowls)
+                        {
+                            if (_b != _b2 /*&& _b.coll == 0*/)
+                            {
+                                if (circleCollide(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, (int)bSize.Height / 2, (int)bSize.Width / 2)) // math provided by Glenn
+                                {
+                                    if (_b.coll == 0 || _b2.coll == 0)
+                                    {
+                                        newDirect(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, _b.power);
+                                        _b.power = pow;
+                                        _b2.power = pow;
+                                        _b.newY = passY;
+                                        _b2.newY = passY;
+                                        _b.coll = 1;
+                                        _b2.coll = 2;
 
+                                    }
+                                }
+                            }
+                        }
+                        if (_b.coll == 2)
+                        {
+                            _b.bowl.X = _b.bowl.X + 2;
+                            _b.power = _b.power - 2;
+                            _b.bowl.Y += (float)_b.newY;
+                        }
+                        else if (_b.coll == 1)
+                        {
+                            _b.bowl.X = _b.bowl.X + 2;
+                            _b.power = _b.power - 2;
+                            _b.bowl.Y -= (float)_b.newY;
+                        }
+                        else
+                        {
+
+                            if (_b.power < 400)
+                            {
+                                if (_b.startY <= 0.00)
+                                {
+                                    _b.bias = 0.014;
+                                }
+                                else
+                                {
+                                    _b.bias = -0.014;
+                                }
+                            }
+                            else if (_b.power < _b.power30)
+                            {
+                                if (_b.startY <= 0.00)
+                                {
+                                    _b.bias = 0.005;
+                                }
+                                else
+                                {
+                                    _b.bias = -0.005;
+                                }
+                            }
+                            _b.newY += _b.bias;
+                            _b.bowl.X = _b.bowl.X + 2;
+                            _b.power = _b.power - 2;
+                            _b.bowl.Y += (float)_b.newY;
+                        }
+                        if (_b.bowl.X > 1000) // testing a ditch effect
+                        {
+                            _b.bowl.Size = new SizeF(20, 20);
+                            _b.power = 0;
+                        }
+                        Refresh();
+                    }
+                }
+                int c = 0;
+                int l = Bowls.Count();
+                foreach (theBowls _t in Bowls)
+                {
+                    if (_t.power <= 0)
+                    {
+                        c++;
+                    }
+                }
+                if (c == l)
+                {
+                    if (thisPlayer == 1)
+                    {
+                        thisPlayer = 2;
+                    }
+                    else
+                    {
+                        thisPlayer = 1;
+                    }
+                }
+
+            }
         }
     }
 }
