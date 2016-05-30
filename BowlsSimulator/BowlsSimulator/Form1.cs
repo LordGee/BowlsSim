@@ -60,6 +60,10 @@ namespace BowlsSimulator
         public Region xHair1, xHair2; // define the cross hair regions
         public float selectedY, selectedP; // temp storage for the Y co-ord and P Power Count
         public float centerY;
+        public RectangleF jack;
+        public float jPower;
+        public double jNewY;
+        public int jColl;
 
         class theBowls // The main dynamic class
         {
@@ -113,17 +117,18 @@ namespace BowlsSimulator
             {
                 if (_b.play == 1)
                 {
-                    e.Graphics.FillEllipse(Brushes.Blue, _b.bowl);
+                    g.FillEllipse(p1Colour, _b.bowl);
                 }
                 else if (_b.play == 2)
                 {
-                    e.Graphics.FillEllipse(Brushes.Red, _b.bowl);
+                    g.FillEllipse(p2Colour, _b.bowl);
                 }
             }
+            g.FillEllipse(Brushes.White, jack);
             if (crossHair && !xHairClick && xHair1 != null)
             {
-                e.Graphics.FillRegion(Brushes.Yellow, xHair1);
-                e.Graphics.FillRegion(Brushes.Yellow, xHair2);
+                g.FillRegion(Brushes.Yellow, xHair1);
+                g.FillRegion(Brushes.Yellow, xHair2);
             }
         }
 
@@ -132,7 +137,7 @@ namespace BowlsSimulator
             screenSize(); // executes function to find out the form width and height at launch
             // customFont(); // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
             drawButtons(); // draws regions for generic layout
-
+            drawJack();
             drawMat(); // defines the mat region that is drawn to the canvas
             gameLoop();
             //powerTime.Interval = powerInterval;
@@ -163,6 +168,10 @@ namespace BowlsSimulator
             pth.AddRectangle(innerMat);
             iMat = new Region(pth);
             
+        }
+        public void drawJack()
+        {
+            jack = new RectangleF(screenWidth - (ditchW * 4), centerY, 15, 15);
         }
 
         public int xHairY;
@@ -410,6 +419,10 @@ namespace BowlsSimulator
                         _c.coll = 0;
                     }
                 }
+                if (jPower <= 0)
+                {
+                    jColl = 0;
+                }
                 foreach (theBowls _b in Bowls)
                 {
                     if (_b.power > 0)
@@ -434,6 +447,18 @@ namespace BowlsSimulator
                                 }
                             }
                         }
+                        if (circleCollide(_b.bowl.X, _b.bowl.Y, jack.X, jack.Y, (int)bSize.Height / 2, (int)bSize.Width / 2)) // math provided by Glenn
+                        {
+                                newDirect(_b.bowl.X, _b.bowl.Y, jack.X, jack.Y, _b.power);
+                                _b.power = pow;
+                                jPower = pow;
+                                _b.newY = passY;
+                                jNewY = passY;
+                                _b.coll = 1;
+                                jColl = 2;
+                               
+
+                        }
                         if (_b.coll == 2)
                         {
                             _b.bowl.X = _b.bowl.X + 2;
@@ -445,6 +470,18 @@ namespace BowlsSimulator
                             _b.bowl.X = _b.bowl.X + 2;
                             _b.power = _b.power - 2;
                             _b.bowl.Y -= (float)_b.newY;
+                        }
+                        if (jColl == 2)
+                        {
+                            jack.X = jack.X + 2;
+                            jPower = jPower - 2;
+                            jack.Y += (float)jNewY;
+                        }
+                        else if (jColl == 1)
+                        {
+                            jack.X = jack.X + 2;
+                            jPower = jPower - 2;
+                            jack.Y -= (float)jNewY;
                         }
                         else
                         {
@@ -476,10 +513,15 @@ namespace BowlsSimulator
                             _b.power = _b.power - 2;
                             _b.bowl.Y += (float)_b.newY;
                         }
-                        if (_b.bowl.X > 1000) // testing a ditch effect
+                        if (_b.bowl.X > screenWidth - ditchW) // testing a ditch effect
                         {
                             _b.bowl.Size = new SizeF(20, 20);
                             _b.power = 0;
+                            _b.coll = 2;
+                        }
+                        if (jack.X > screenWidth - ditchW)
+                        {
+                            jack.Size = new SizeF(8, 8);
                         }
                         Refresh();
                     }
