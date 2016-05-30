@@ -35,6 +35,7 @@
             this.playerColour = new System.Windows.Forms.ColorDialog();
             this.colorDialog3 = new System.Windows.Forms.ColorDialog();
             this.colorDialog4 = new System.Windows.Forms.ColorDialog();
+            this.gameLoopy = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // powerTime
@@ -46,6 +47,10 @@
             // 
             this.xHairTime.Interval = 10;
             this.xHairTime.Tick += new System.EventHandler(this.xHairTime_Tick);
+            // 
+            // gameLoopy
+            // 
+            this.gameLoopy.Tick += new System.EventHandler(this.gameLoopy_Tick);
             // 
             // frmMainGame
             // 
@@ -73,6 +78,7 @@
         private System.Windows.Forms.ColorDialog playerColour;
         private System.Windows.Forms.ColorDialog colorDialog3;
         private System.Windows.Forms.ColorDialog colorDialog4;
+        private System.Windows.Forms.Timer gameLoopy;
     }
 }
 
