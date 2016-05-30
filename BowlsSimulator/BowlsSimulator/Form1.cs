@@ -53,6 +53,8 @@ namespace BowlsSimulator
         public bool launch = true;
         public int powerInterval = 30;
         public int powerSpeed = 10;
+        public Brush p2Colour = Brushes.DarkRed;
+        public Brush p1Colour = Brushes.DarkBlue;
 
         class theBowls // The main dynamic class
         {
@@ -79,10 +81,9 @@ namespace BowlsSimulator
             g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
             g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
             g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button   
+            //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
             g.FillRegion(Brushes.Transparent, exitButton);
             g.FillRegion(Brushes.Transparent, optionsButtons);
-
-            g.DrawString("Two Player Game", ff, continueColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
             if (oMat != null)
             {
                 g.FillRegion(Brushes.White, oMat);
@@ -186,7 +187,7 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
-                
+               // Application.CommonAppDataPath 
             }
         }
 
