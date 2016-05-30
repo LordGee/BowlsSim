@@ -213,18 +213,20 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location))
             {
-               
+                pickColor(); 
             }
             else if (e.Button == MouseButtons.Left && oMat.IsVisible(e.Location))
             {
-
+                
             }
         }
-        public void pickColor()
+        public void pickColor()// it is a funtion to pick up the colour
         {
-           
-        }    
-
+            if (playerColour.ShowDialog() == DialogResult.OK)
+            {
+                exitColour = new SolidBrush(playerColour.Color);
+            }
+        }
         private void powerTime_Tick(object sender, EventArgs e)
         {
                 if (powerCount > ClientSize.Width)
