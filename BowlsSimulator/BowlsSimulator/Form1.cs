@@ -294,6 +294,7 @@ namespace BowlsSimulator
         {
             if (game)
             {
+                showOnce = true;
                 startCrossHair();
             }
         }
@@ -378,6 +379,7 @@ namespace BowlsSimulator
             PointF bowlXY = new PointF(startX, startY);
             drawNewBowl(bowlXY);
             bowlConfirm = true;
+            bowlTime.Interval = 10;
             bowlTime.Start();
         }
 
@@ -480,6 +482,7 @@ namespace BowlsSimulator
                         {
                             if (_b.power < 100)
                             {
+                                bowlTime.Interval = 17;
                                 if (_b.startY <= 0.00)
                                 {
                                     _b.bias = 0.01;
@@ -491,6 +494,7 @@ namespace BowlsSimulator
                             }
                             else if (_b.power < _b.power30)
                             {
+                                bowlTime.Interval = 15;
                                 if (_b.startY <= 0.00)
                                 {
                                     _b.bias = 0.002;
@@ -527,47 +531,6 @@ namespace BowlsSimulator
                     {
                         c++;
                         _t.distance = calcDistance(_t.bowl.X, _t.bowl.Y, jack.X, jack.Y); // calculat the distance between the bowl and jack
-                        foreach (theBowls _s in Bowls)
-                        {
-                            if (_t != _s && _t.end == currEnd && _s.end == currEnd)
-                            {
-                                if (_t.distance < _s.distance)
-                                {
-                                    _t.shot += 1;
-                                }
-                                else _s.shot += 1;
-                            }
-                        }
-                        foreach (theBowls _r in Bowls)
-                        {
-                            if (_r.shot == 6 && _r.end == currEnd)
-                            {
-                                if (_r.play == 1)
-                                {
-                                    p1EndScore = 1;
-                                    p2EndScore = 0;
-                                }
-                                else
-                                {
-                                    p2EndScore = 1;
-                                    p1EndScore = 0;
-                                }
-                            }
-                        }
-                        foreach (theBowls _r2 in Bowls)
-                        {
-                            if (_r2.shot == 4 && _r2.end == currEnd)
-                            {
-                                if (_r2.play == 1 && p1EndScore > 0)
-                                {
-                                    p1EndScore += 1;
-                                }
-                                else if (_r2.play == 2 && p2EndScore > 0)
-                                {
-                                    p2EndScore += 1;
-                                }
-                            }
-                        }
                     }
                 }
                 if (c == l) // determines if all the bowls have stoped moving
@@ -583,15 +546,68 @@ namespace BowlsSimulator
                     currBowl++; // move variable to the next bowl to be played
                     if (currBowl > 4) // have all the bowls been played?
                     {
+                        foreach (theBowls _t in Bowls)
+                        {
+                            foreach (theBowls _s in Bowls)
+                            {
+                                if (_t != _s && _t.end == currEnd && _s.end == currEnd)
+                                {
+                                    if (_t.distance < _s.distance)
+                                    {
+                                        _t.shot += 1;
+                                    }
+                                    else 
+                                    {
+                                        _s.shot += 1;
+                                    }
+                                }
+                            }
+                            foreach (theBowls _r in Bowls)
+                            {
+                                if (_r.shot == 6 && _r.end == currEnd)
+                                {
+                                    if (_r.play == 1)
+                                    {
+                                        p1EndScore += 1;
+                                    }
+                                    else
+                                    {
+                                        p2EndScore += 1;
+                                    }
+                                }
+                            }
+                            foreach (theBowls _r2 in Bowls)
+                            {
+                                if (_r2.shot == 4 && _r2.end == currEnd)
+                                {
+                                    if (_r2.play == 1 && p1EndScore > 0)
+                                    {
+                                        p1EndScore += 1;
+                                    }
+                                    else if (_r2.play == 2 && p2EndScore > 0)
+                                    {
+                                        p2EndScore += 1;
+                                    }
+                                }
+                            }
+                        }
                         p1score += p1EndScore;
                         p2score += p2EndScore;
-                        //DialogResult ee = MessageBox.Show("Well done, the results of end " + currEnd + " are as followed\n\nPlayer 1 Scored : " + p1EndScore + "\nPlayer 2 Scored : " + p2EndScore + "\n\n\nClick OK to continue to the next end", "Results", MessageBoxButtons.OK);
-                        //if (ee == DialogResult.OK)
-                        //{
-                            currEnd++; // move to the next end
-                            currBowl = 1; // reset first bowl to 1
-                            drawJack(); // if the jack is moved off position, this will recenter it for the next end
-                        //}
+                        if (showOnce)
+                        {
+                            bowlTime.Stop();
+                            DialogResult ee = MessageBox.Show("Well done, the results of end " + currEnd + " are as followed\n\nPlayer 1 Scored : " + p1EndScore + "\nPlayer 2 Scored : " + p2EndScore + "\n\n\nClick OK to continue to the next end", "Results", MessageBoxButtons.OK);
+                            if (ee == DialogResult.OK)
+                            {
+                                p1EndScore = 0;
+                                p2EndScore = 0;
+                                currEnd++; // move to the next end
+                                currBowl = 1; // reset first bowl to 1
+                                drawJack(); // if the jack is moved off position, this will recenter it for the next end
+                                gameLoop();
+                            }
+                            showOnce = false;
+                        }
                     }
                     else
                     {
@@ -601,7 +617,7 @@ namespace BowlsSimulator
                 }
             }
         }
-
+        public bool showOnce;
         public bool circleCollide(float _X1, float _Y1, float _X2, float _Y2, int _r1, int _r2)
         { // the following code was provided by Glenn
             return (Math.Sqrt(Math.Pow(Math.Abs(_X1 - _X2), 2) + Math.Pow(Math.Abs(_Y1 - _Y2), 2)) <= (_r1 + _r2));
