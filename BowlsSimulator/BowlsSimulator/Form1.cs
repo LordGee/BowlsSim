@@ -35,8 +35,6 @@ namespace BowlsSimulator
         public GraphicsPath pth;
         public Region optionsButtons;
         public Brush optionColour = Brushes.DarkBlue;
-        public Brush playeroneColor = Brushes.Black;
-        public Brush playertwoColor = Brushes.Black;
         public Random ran = new Random();
         public SizeF bSize = new SizeF(30, 30);
         public float pow = 0;
@@ -96,7 +94,15 @@ namespace BowlsSimulator
             drawButtons(); // draws regions for generic layout
             drawJack(); // draws the jack to the screen
             drawMat(); // defines the mat region that is drawn to the canvas
-            newGame(); // starts and resets the game controller
+            DialogResult startBox = MessageBox.Show("Would you like to start a new game?\n\n\nInstructions\n\n1. When the game starts a crosshair will appear this determines the direction of play.\n2. Click the black and white mat to stop the crosshair.\n3. The power bar will start moving right and left across the screen, this will determine how far your bowl will travel\n4. Click the black and white mat to stop the Power Bar\n5. Your bowl will be played, and the next player takes their turn. Once all bowls are played (2 each) the closest bowl scores 1 point, if that same player has the second closest bowl then that player will score 2 points.\n\n The game ends with the first player to achieve 7 points.\n\n\n GOOD LUCK", "New Game?", MessageBoxButtons.YesNo);
+            if (startBox == DialogResult.Yes)
+            {
+                newGame(); // starts and resets the game controller
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
 
         public void screenSize()
@@ -162,8 +168,8 @@ namespace BowlsSimulator
             g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
             g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
             g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
-            g.DrawString("Player One: "+ p1score , new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), playeroneColor, new Point(ditchW, ditchW));
-            g.DrawString("Player Two: "+ p2score, new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), playertwoColor, new Point(ditchW, ditchW * 3));
+            g.DrawString("Player One: " + p1score , new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p1Colour, new Point(ditchW, ditchW));
+            g.DrawString("Player Two: " + p2score, new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p2Colour, new Point(ditchW, ditchW * 3));
             //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
             g.FillRegion(Brushes.Transparent, exitButton);
             g.FillRegion(Brushes.Transparent, optionsButtons);
@@ -175,7 +181,7 @@ namespace BowlsSimulator
             }
             if (pbF != null)
             {
-                g.FillRegion(Brushes.LightSkyBlue, pbF);
+                g.FillRegion(Brushes.DarkViolet, pbF);
             }
             foreach (theBowls _b in Bowls)
             {
@@ -282,6 +288,7 @@ namespace BowlsSimulator
         public void newGame()
         {
             // reset variables ready for new game
+            Bowls.Clear();
             p1score = 0;
             p2score = 0;
             currEnd = 1;
@@ -603,6 +610,28 @@ namespace BowlsSimulator
                                 p2EndScore = 0;
                                 currEnd++; // move to the next end
                                 currBowl = 1; // reset first bowl to 1
+                                if (p1score >= 21 || p2score >= 21)
+                                {
+                                    string winner;
+                                    if (p1score >= 21)
+                                    {
+                                        winner = "One";
+                                    }
+                                    else
+                                    {
+                                        winner = "Two";
+                                    }
+                                    DialogResult end = MessageBox.Show("Congratulation\n\nPlayer " + winner + " is the WINNER\n\nWould you like to play again?", "WINNER!", MessageBoxButtons.YesNo);
+                                    if (end == DialogResult.Yes)
+                                    {
+                                        newGame();
+                                    }
+                                    else
+                                    {
+                                        Application.Exit();
+                                    }
+                                }
+                                
                                 drawJack(); // if the jack is moved off position, this will recenter it for the next end
                                 gameLoop();
                             }
