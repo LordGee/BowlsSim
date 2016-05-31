@@ -162,8 +162,8 @@ namespace BowlsSimulator
             g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
             g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
             g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
-            g.DrawString("Player One:", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), playeroneColor, new Point(ditchW, ditchW));
-            g.DrawString("Player Two:", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), playertwoColor, new Point(ditchW, ditchW * 3));
+            g.DrawString("Player One: "+ p1score , new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), playeroneColor, new Point(ditchW, ditchW));
+            g.DrawString("Player Two: "+ p2score, new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), playertwoColor, new Point(ditchW, ditchW * 3));
             //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
             g.FillRegion(Brushes.Transparent, exitButton);
             g.FillRegion(Brushes.Transparent, optionsButtons);
