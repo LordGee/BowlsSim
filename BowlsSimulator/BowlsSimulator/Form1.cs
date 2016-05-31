@@ -35,6 +35,8 @@ namespace BowlsSimulator
         public GraphicsPath pth;
         public Region optionsButtons;
         public Brush optionColour = Brushes.DarkBlue;
+        public Brush playeroneColor = Brushes.Black;
+        public Brush playertwoColor = Brushes.Black;
         public Random ran = new Random();
         public SizeF bSize = new SizeF(30, 30);
         public float pow = 0;
@@ -159,7 +161,9 @@ namespace BowlsSimulator
             g.FillRectangle(Brushes.Brown, screenWidth - ditchW, bannerHeight, ditchW, gameHeight); // draw the right ditch
             g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
             g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
-            g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button   
+            g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
+            g.DrawString("Player One:", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), playeroneColor, new Point(ditchW, ditchW));
+            g.DrawString("Player Two:", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), playertwoColor, new Point(ditchW, ditchW * 3));
             //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
             g.FillRegion(Brushes.Transparent, exitButton);
             g.FillRegion(Brushes.Transparent, optionsButtons);
