@@ -27,7 +27,7 @@ namespace BowlsSimulator
         // Public Variables Go Here
         public int fs = 36; // Define the size of the font used
         public int screenWidth, screenHeight; // Varable to hold the size of the form maximised on load
-        public int bannerHeight, gameHeight; // Variables to gold the height of the game area and the heaight for the header and footers.
+        public int bannerHeight, gameHeight; // Variables to gold the height of the game area and the height for the header and footers.
         public Font ff; // Font variable that holds the main font that will be used throughout the application
         public int ditchW;// this will be the value of the width for the ditch
         public Region exitButton;
@@ -51,6 +51,7 @@ namespace BowlsSimulator
         public bool testExitColour;
         public bool testOptionColour;
         public Brush continueColour = Brushes.DarkGreen;
+        public Brush matColour = Brushes.Black;
         public bool launch = true;
         public int powerInterval = 30;
         public int bowlSpeed = 3;
@@ -163,39 +164,11 @@ namespace BowlsSimulator
         {
             Graphics g = e.Graphics;
             Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
-            g.FillRectangle(Brushes.DarkGreen, 0, 0, screenWidth, screenHeight);
-            g.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
-            g.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
-            g.FillRectangle(Brushes.Brown, 0, bannerHeight, ditchW, gameHeight); // draw the left ditch
+            Font ffs = new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold); // probably not the best name for a variable ffs = Font Family Smaller, not the more commonly used phrase
+            g.FillRectangle(Brushes.DarkGreen, 0, 0, screenWidth, screenHeight); // Due to the grassy background hindering performance this is a solid colour the covers the whole screen... and works
             g.FillRectangle(Brushes.Brown, screenWidth - ditchW, bannerHeight, ditchW, gameHeight); // draw the right ditch
-            g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
-            g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
-            g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
-            g.DrawString("Player One: " + p1score , new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p1Colour, new Point(ditchW, ditchW));
-            g.DrawString("Player Two: " + p2score, new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p2Colour, new Point(ditchW, ditchW * 3));
-            g.DrawString("Now Playing", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), Brushes.Black, new Point(screenWidth - 300, ditchW));
-            if (thisPlayer == 1)
-            {
-                g.DrawString("Player: ONE", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p1Colour, new Point(screenWidth - 300, ditchW * 3));
-            }
-            else if (thisPlayer == 2)
-            {
-                g.DrawString("Player: TWO", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p2Colour, new Point(screenWidth - 300, ditchW * 3));
-            }
-            //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
-            g.FillRegion(Brushes.Transparent, exitButton);
-            g.FillRegion(Brushes.Transparent, optionsButtons);
-            if (oMat != null)
-            {
-                g.FillRegion(Brushes.White, oMat);
-                g.FillRegion(Brushes.Black, iMat);
-                
-            }
-            if (pbF != null)
-            {
-                g.FillRegion(Brushes.DarkViolet, pbF);
-            }
-            foreach (theBowls _b in Bowls)
+            g.FillRectangle(Brushes.Brown, 0, bannerHeight, ditchW, gameHeight); // draw the left ditch
+            foreach (theBowls _b in Bowls) // draws any bowls for the current end to the canvas
             {
                 if (_b.end == currEnd)
                 {
@@ -209,7 +182,37 @@ namespace BowlsSimulator
                     }
                 }
             }
-            g.FillEllipse(Brushes.White, jack);
+            g.FillEllipse(Brushes.White, jack); // Draws the jack, the jack is drawn after the bowls . If theres a glitch the jack should still be visiable
+            g.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
+            g.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
+            g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
+            g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
+            g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
+            g.DrawString("Player One: " + p1score , ffs, p1Colour, new Point(ditchW, ditchW)); // draw player ones score to the top left
+            g.DrawString("Player Two: " + p2score, ffs, p2Colour, new Point(ditchW, ditchW * 3)); // just below player one
+            g.DrawString("Now Playing", ffs, Brushes.Black, new Point(screenWidth - 300, ditchW)); // the following presents the current player although now the mat changes colour this can be obsolete
+            if (thisPlayer == 1)
+            {
+                g.DrawString("Player: ONE", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p1Colour, new Point(screenWidth - 300, ditchW * 3));
+            }
+            else if (thisPlayer == 2)
+            {
+                g.DrawString("Player: TWO", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p2Colour, new Point(screenWidth - 300, ditchW * 3));
+            }
+            //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
+            g.FillRegion(Brushes.Transparent, exitButton); // hidden region, found this easier to detect a mouse click
+            g.FillRegion(Brushes.Transparent, optionsButtons); // same as the last one
+            if (oMat != null)
+            {
+                g.FillRegion(Brushes.White, oMat);
+                g.FillRegion(matColour, iMat);
+                
+            }
+            if (pbF != null)
+            {
+                g.FillRegion(Brushes.DarkViolet, pbF);
+            }
+            
             if (crossHair && !xHairClick && xHair1 != null)
             {
                 g.FillRegion(Brushes.Yellow, xHair1);
@@ -258,11 +261,11 @@ namespace BowlsSimulator
                 DialogResult dr = MessageBox.Show("Do you want to Change the colour of player bowls?\n\nClick YES for Player 1\n\nClick NO for Player 2", "Change player colour", MessageBoxButtons.YesNoCancel);
                 if (dr == DialogResult.Yes)
                 {
-                    pickColor(p1Colour);
+                    p1Colour = pickColor(p1Colour);
                 }
                 else if (dr == DialogResult.No)
                 {
-                    pickColor(p2Colour);
+                    p2Colour = pickColor(p2Colour);
                 }
             }
             else if (e.Button == MouseButtons.Left && oMat.IsVisible(e.Location))
@@ -285,12 +288,14 @@ namespace BowlsSimulator
             }
         }
 
-        public void pickColor(Brush _b)// setting up a funtion to pick up the colour
+        public Brush pickColor(Brush _b)// setting up a funtion to pick up the colour
         {
+            playerColour.SolidColorOnly = false;
             if (playerColour.ShowDialog() == DialogResult.OK)
             {
                 _b = new SolidBrush(playerColour.Color);
             }
+            return _b;
         }
 
         /// <summary>
@@ -557,10 +562,12 @@ namespace BowlsSimulator
                     if (thisPlayer == 1) // the following changes to the next player
                     {
                         thisPlayer = 2;
+                        matColour = p2Colour;
                     }
                     else
                     {
                         thisPlayer = 1;
+                        matColour = p1Colour;
                     }
                     currBowl++; // move variable to the next bowl to be played
                     if (currBowl > 4) // have all the bowls been played?
@@ -588,10 +595,14 @@ namespace BowlsSimulator
                                     if (_r.play == 1)
                                     {
                                         p1EndScore += 1;
+                                        thisPlayer = 1;
+                                        matColour = p1Colour;
                                     }
                                     else
                                     {
                                         p2EndScore += 1;
+                                        thisPlayer = 2;
+                                        matColour = p2Colour;
                                     }
                                 }
                             }
@@ -622,7 +633,7 @@ namespace BowlsSimulator
                                 p2EndScore = 0;
                                 currEnd++; // move to the next end
                                 currBowl = 1; // reset first bowl to 1
-                                if (p1score >= 21 || p2score >= 21)
+                                if (p1score >= 7 || p2score >= 7)
                                 {
                                     string winner;
                                     if (p1score >= 21)
@@ -670,7 +681,7 @@ namespace BowlsSimulator
             double _O = _Y1 - _Y2;
             double _toa = _O / _A;
             double _deg = Math.Atan(_toa);
-            passY = Math.Tan(_deg) * 2;
+            passY = Math.Tan(_deg) * bowlSpeed;
             if (passY > 4)
             {
                 passY = 4;
