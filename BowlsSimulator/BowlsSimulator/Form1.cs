@@ -36,6 +36,7 @@ namespace BowlsSimulator
         public Region optionsButtons;
         public Brush optionColour = Brushes.DarkBlue;
         public Random ran = new Random();
+        public int bs = 30;
         public SizeF bSize = new SizeF(30, 30);
         public float pow = 0;
         public float startX = 100;
@@ -52,7 +53,8 @@ namespace BowlsSimulator
         public Brush continueColour = Brushes.DarkGreen;
         public bool launch = true;
         public int powerInterval = 30;
-        public int gameSpeed = 5;
+        public int bowlSpeed = 3;
+        public int gameSpeed = 6;
         public Brush p2Colour = Brushes.DarkRed;
         public Brush p1Colour = Brushes.DarkBlue;
         public bool game = true; // starts the game
@@ -61,6 +63,7 @@ namespace BowlsSimulator
         public float selectedY, selectedP; // temp storage for the Y co-ord and P Power Count
         public float centerY;
         public RectangleF jack;
+        public int js = 15;
         public float jPower;
         public double jNewY;
         public int jColl;
@@ -153,7 +156,7 @@ namespace BowlsSimulator
         public void drawJack()
         {
             int jackX = ran.Next(screenWidth / 2, screenWidth - (ditchW * 6));
-            jack = new RectangleF(jackX, centerY, 15, 15);
+            jack = new RectangleF(jackX, centerY, js, js);
         }
         
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
@@ -170,6 +173,15 @@ namespace BowlsSimulator
             g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
             g.DrawString("Player One: " + p1score , new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p1Colour, new Point(ditchW, ditchW));
             g.DrawString("Player Two: " + p2score, new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p2Colour, new Point(ditchW, ditchW * 3));
+            g.DrawString("Now Playing", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), Brushes.Black, new Point(screenWidth - 300, ditchW));
+            if (thisPlayer == 1)
+            {
+                g.DrawString("Player: ONE", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p1Colour, new Point(screenWidth - 300, ditchW * 3));
+            }
+            else if (thisPlayer == 2)
+            {
+                g.DrawString("Player: TWO", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p2Colour, new Point(screenWidth - 300, ditchW * 3));
+            }
             //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
             g.FillRegion(Brushes.Transparent, exitButton);
             g.FillRegion(Brushes.Transparent, optionsButtons);
@@ -360,7 +372,7 @@ namespace BowlsSimulator
                 {
                     powerTest = true;
                 }
-                else if (powerCount < 10)
+                else if (powerCount < gameHeight)
                 {
                     powerTest = false;
                 }
@@ -463,26 +475,26 @@ namespace BowlsSimulator
                         }
                         if (_b.coll == 2)
                         {
-                            _b.bowl.X = _b.bowl.X + 2;
-                            _b.power = _b.power - 2;
+                            _b.bowl.X = _b.bowl.X + bowlSpeed;
+                            _b.power = _b.power - bowlSpeed;
                             _b.bowl.Y += (float)_b.newY;
                         }
                         else if (_b.coll == 1)
                         {
-                            _b.bowl.X = _b.bowl.X + 2;
-                            _b.power = _b.power - 2;
+                            _b.bowl.X = _b.bowl.X + bowlSpeed;
+                            _b.power = _b.power - bowlSpeed;
                             _b.bowl.Y -= (float)_b.newY;
                         }
                         if (jColl == 2)
                         {
-                            jack.X = jack.X + 2;
-                            jPower = jPower - 2;
+                            jack.X = jack.X + bowlSpeed;
+                            jPower = jPower - bowlSpeed;
                             jack.Y += (float)jNewY;
                         }
                         else if (jColl == 1)
                         {
-                            jack.X = jack.X + 2;
-                            jPower = jPower - 2;
+                            jack.X = jack.X + bowlSpeed;
+                            jPower = jPower - bowlSpeed;
                             jack.Y -= (float)jNewY;
                         }
                         else
@@ -512,8 +524,8 @@ namespace BowlsSimulator
                                 }
                             }
                             _b.newY += _b.bias; // plus the calculated bias to the next Y co-ord
-                            _b.bowl.X = _b.bowl.X + 2; // move the bowl another 2 pixels to the right
-                            _b.power = _b.power - 2; // reduce the amount of remaining power by 2x
+                            _b.bowl.X = _b.bowl.X + bowlSpeed; // move the bowl another 2 pixels to the right
+                            _b.power = _b.power - bowlSpeed; // reduce the amount of remaining power by 2x
                             _b.bowl.Y += (float)_b.newY;
                         }
                         if (_b.bowl.X > screenWidth - ditchW) // testing a ditch effect
@@ -537,7 +549,7 @@ namespace BowlsSimulator
                     if (_t.power <= 0)
                     {
                         c++;
-                        _t.distance = calcDistance(_t.bowl.X, _t.bowl.Y, jack.X, jack.Y); // calculat the distance between the bowl and jack
+                        _t.distance = calcDistance(_t.bowl.X + (bs / 2), _t.bowl.Y + (bs / 2), jack.X + (js / 2), jack.Y + (js / 2)); // calculat the distance between the bowl and jack
                     }
                 }
                 if (c == l) // determines if all the bowls have stoped moving
