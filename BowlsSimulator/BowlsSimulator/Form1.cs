@@ -26,15 +26,15 @@ namespace BowlsSimulator
 
         // Public Variables Go Here
         // Numerical Values
+        public const int bowlSpeed = 3; // defines the speed the bowl travels
+        public const int gameSpeed = 6; // defines the speed of the cross hair and powerbar
         public int fs = 36; // Define the size of the font used
         public int screenWidth, screenHeight; // Varable to hold the size of the form maximised on load
-        public int bannerHeight, gameHeight; // Variables to gold the height of the game area and the height for the header and footers.
+        public int bannerHeight, gameHeight; // Variables to hold the height of the game area and the height for the header and footers.
         public int ditchW;// this will be the value of the width for the ditch
         public int bs = 30; // references the size of the Bowl
         public int thisPlayer = 1; // defines the current player
         public int powerCount = 0; // indicates the value of where the power bar X co-ord is
-        public int bowlSpeed = 3; // defines the speed the bowl travels
-        public int gameSpeed = 6; // defines the speed of the cross hair and powerbar
         public int js = 15; // references the size of the Jack
         public int jColl; // sets a collision value when the jack is struck by another object
         public int xHairY; // indicates the value of where the cross hair Y co-ord is
@@ -70,8 +70,8 @@ namespace BowlsSimulator
         public bool game = true; // starts the game
         public bool showOnce; // ensures a dialog is only shown once per end
         public bool crossHair = false; // if this is true wil redraw graphic
-        public bool powerTest = false; // determins if a click is waiting to be detected
-        public bool powerClick = true; // determins if a click is waiting to be detected
+        public bool powerTest = false; // determines if a click is waiting to be detected
+        public bool powerClick = true; // determines if a click is waiting to be detected
         public bool xHairClick, xHairTest; // determins if a click is waiting to be detected
         public bool bowlConfirm; // sets the bowl ready to be drawn to screen
         public bool cpu, allCpu; // Defines if at least one of the players is a computer playerComputer control
@@ -495,7 +495,7 @@ namespace BowlsSimulator
             {
                 foreach (theBowls _c in Bowls)
                 { // resets the collision states if the bowl is not in motion any longer
-                    if (_c.power <= 0)
+                    if (_c.power <= 0 && _c.end == currEnd)
                     {
                         _c.coll = 0;
                     }
@@ -506,11 +506,11 @@ namespace BowlsSimulator
                 }
                 foreach (theBowls _b in Bowls)
                 {
-                    if (_b.power > 0)
+                    if (_b.power > 0 && _b.end == currEnd)
                     { // if the bowl is in motion
                         foreach (theBowls _b2 in Bowls)
                         {
-                            if (_b != _b2 /*&& _b.coll == 0*/) // the comparison is not the same object
+                            if (_b != _b2 && _b2.end == currEnd) // the comparison is not the same object
                             { 
                                 if (circleCollide(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, (int)bSize.Height / 2, (int)bSize.Width / 2)) // math provided by Glenn
                                 { // if two bowls have colided
@@ -613,8 +613,14 @@ namespace BowlsSimulator
                     if (_t.power <= 0)
                     { // if the bowl has stoped move
                         c++; // count
+                    }
+                }
+                foreach (theBowls _cd in Bowls)
+                {
+                    if (_cd.power <= 0 && _cd.end == currEnd)
+                    {
                         // the following calculates the distance from the bowl to the jack
-                        _t.distance = calcDistance(_t.bowl.X + (bs / 2), _t.bowl.Y + (bs / 2), jack.X + (js / 2), jack.Y + (js / 2)); // calculat the distance between the bowl and jack
+                        _cd.distance = calcDistance(_cd.bowl.X + (bs / 2), _cd.bowl.Y + (bs / 2), jack.X + (js / 2), jack.Y + (js / 2)); // calculat the distance between the bowl and jack
                     }
                 }
                 if (c == l) // determines if all the bowls have stoped moving
