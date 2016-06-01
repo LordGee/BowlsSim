@@ -25,80 +25,82 @@ namespace BowlsSimulator
         }
 
         // Public Variables Go Here
+        // Numerical Values
         public int fs = 36; // Define the size of the font used
         public int screenWidth, screenHeight; // Varable to hold the size of the form maximised on load
         public int bannerHeight, gameHeight; // Variables to gold the height of the game area and the height for the header and footers.
-        public Font ff; // Font variable that holds the main font that will be used throughout the application
         public int ditchW;// this will be the value of the width for the ditch
-        public Region exitButton;
-        public Brush exitColour = Brushes.DarkRed;
-        public GraphicsPath pth;
-        public Region optionsButtons;
-        public Brush optionColour = Brushes.DarkBlue;
-        public Random ran = new Random();
-        public int bs = 30;
-        public SizeF bSize = new SizeF(30, 30);
-        public float pow = 0;
-        public float startX = 100;
-        public float startY = 300;
-        public GraphicsPath mpth;
-        public Region oMat, iMat;
-        public int thisPlayer = 1;
-        public double passY;
-        public Region pbB, pbF;
-        public int powerCount = 0;
-        public bool powerTest = false;
-        public bool testExitColour;
-        public bool testOptionColour;
-        public Brush continueColour = Brushes.DarkGreen;
-        public Brush matColour = Brushes.Black;
-        public bool launch = true;
-        public int powerInterval = 30;
-        public int bowlSpeed = 3;
-        public int gameSpeed = 6;
-        public Brush p2Colour = Brushes.DarkRed;
-        public Brush p1Colour = Brushes.DarkBlue;
-        public bool game = true; // starts the game
-        public bool crossHair = false; // if this is true wil redraw graphic
-        public Region xHair1, xHair2; // define the cross hair regions
+        public int bs = 30; // references the size of the Bowl
+        public int thisPlayer = 1; // defines the current player
+        public int powerCount = 0; // indicates the value of where the power bar X co-ord is
+        public int bowlSpeed = 3; // defines the speed the bowl travels
+        public int gameSpeed = 6; // defines the speed of the cross hair and powerbar
+        public int js = 15; // references the size of the Jack
+        public int jColl; // sets a collision value when the jack is struck by another object
+        public int xHairY; // indicates the value of where the cross hair Y co-ord is
+        public int p1score, p2score, p1EndScore, p2EndScore, currEnd, currBowl, gameNo; // current game statistics
+        public int cpuHairY, cpuPower; // indicates the value of the CPU Crosshair and Power Bar
+        public float pow = 0; // Temp storage of the power value
+        public float startX = 100; // Indicates the starting X value of the bowl
+        public float startY = 300; // indicates the starting Y value of the bowl
         public float selectedY, selectedP; // temp storage for the Y co-ord and P Power Count
-        public float centerY;
-        public RectangleF jack;
-        public int js = 15;
-        public float jPower;
-        public double jNewY;
-        public int jColl;
-        public int xHairY;
-        public bool powerClick = true;
-        public bool xHairClick, xHairTest;
-        public bool bowlConfirm;
-        public int p1score, p2score, p1EndScore, p2EndScore, currEnd, currBowl, gameNo; // current stats
-        public bool cpu;
+        public float centerY; // holds the value for the centre of the screen
+        public float jPower; // after collision the jack now has power
+        public double jNewY; // indicates the Jacks new Y co-ord after collision
+        public double passY; // Temp storage of the new Y value after collision has been detected
+        public Random ran = new Random(); // generates a random number, used for testing and computer play
+        // Graphics
+        public Font ff; // Font variable that holds the main font that will be used throughout the application
+        public Brush exitColour = Brushes.DarkRed; // the colour of the exit button
+        public Brush optionColour = Brushes.DarkBlue; // the colour of the Options Button
+        public Brush matColour = Brushes.Black; // the colour of the inner mat, this will change colour depending on what player is playing
+        public Brush p1Colour = Brushes.DarkBlue; // defines player one colour, this can be changed in options
+        public Brush p2Colour = Brushes.DarkRed; // defines player two colour, this can be changed in options
+        public Region exitButton; // defines the location of the exit button so a mouse click can be detected
+        public Region optionsButtons; // defines the location of the options button so a mouse click can be detected
+        public Region oMat, iMat; // defines the location of the inner and outer mat
+        public Region pbB, pbF; // befines the two layers of the power bar
+        public Region xHair1, xHair2; // define the cross hair regions
+        public RectangleF jack; // defines the shape and location of the Jack
+        public GraphicsPath pth; // defines the path for the appropriate regions
+        public GraphicsPath mpth; // same as above
+        public SizeF bSize = new SizeF(30, 30);
+        // Booleans
+        public bool testExitColour, testOptionColour; // Indicates if the colour has been changed already
+        public bool game = true; // starts the game
+        public bool showOnce; // ensures a dialog is only shown once per end
+        public bool crossHair = false; // if this is true wil redraw graphic
+        public bool powerTest = false; // determins if a click is waiting to be detected
+        public bool powerClick = true; // determins if a click is waiting to be detected
+        public bool xHairClick, xHairTest; // determins if a click is waiting to be detected
+        public bool bowlConfirm; // sets the bowl ready to be drawn to screen
+        public bool cpu, allCpu; // Defines if at least one of the players is a computer playerComputer control
 
         class theBowls // The main dynamic class
         {
-            public int play;
-            public RectangleF bowl;
-            public float power;
-            public float power30;
-            public double newY;
-            public double startY;
-            public int coll;
-            public double bias;
-            public int end;
-            public double distance;
-            public int shot;
+            public int play; // stores the player number
+            public RectangleF bowl; // stores the position of the bowl
+            public float power; // holds the power value which decreases as it travels
+            public float power30; // calculates the new power value after collision
+            public double newY; // Calculate new Y co-ord after a collision
+            public double startY; // Holds the previous Y co-ord for calculating collisions and the bias movement
+            public int coll; // indicates if a collision which is the front bowls and which is the back, reset to 0 after each tick
+            public double bias; // Holds the value of the bias decrease / increase
+            public int end; // stores the end the bowl was played
+            public double distance; // calculates the distance between the jack and the bowls
+            public int shot; // holds a calculation of the bowl thats closest (6,4,2,0) 6 == closest
         }
-        theBowls newbowl = new theBowls();
+        theBowls newbowl = new theBowls(); // initiates an instance to add a new object to the class
         List<theBowls> Bowls = new List<theBowls>(); // generates the list of the dynamic class
 
         private void frmMainGame_Load(object sender, EventArgs e)
         {
             screenSize(); // executes function to find out the form width and height at launch
-            // customFont(); // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
+            // customFont(); // defunct: worked well to start but now crashes the application // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
             drawButtons(); // draws regions for generic layout
             drawJack(); // draws the jack to the screen
             drawMat(); // defines the mat region that is drawn to the canvas
+            // display instruction and start or exit game
             DialogResult startBox = MessageBox.Show("Would you like to start a new game?\n\n\nInstructions\n\n1. When the game starts a crosshair will appear this determines the direction of play.\n2. Click the black and white mat to stop the crosshair.\n3. The power bar will start moving right and left across the screen, this will determine how far your bowl will travel\n4. Click the black and white mat to stop the Power Bar\n5. Your bowl will be played, and the next player takes their turn. Once all bowls are played (2 each) the closest bowl scores 1 point, if that same player has the second closest bowl then that player will score 2 points.\n\n The game ends with the first player to achieve 7 points.\n\n\n GOOD LUCK", "New Game?", MessageBoxButtons.YesNo);
             if (startBox == DialogResult.Yes)
             {
@@ -106,7 +108,7 @@ namespace BowlsSimulator
             }
             else
             {
-                Application.Exit();
+                Application.Exit(); // exit game
             }
         }
 
@@ -118,9 +120,9 @@ namespace BowlsSimulator
             centerY = screenHeight / 2;
             gameHeight = (screenWidth / 7) + 200; // calculation to work out the game area // increased from the design to 200 from 100 to make the game area bigger then the banners
             bannerHeight = (screenHeight - gameHeight) / 2; // the height of the header and footer banners
-            ditchW = screenWidth * 2 / 100;
-            startX = ditchW * 4;
-            startY = centerY;
+            ditchW = screenWidth * 2 / 100; // calculation for the ditch width
+            startX = ditchW * 4; // calculates where to start the bowls from
+            startY = centerY; // as above
         }
 
         public void customFont()
@@ -132,6 +134,7 @@ namespace BowlsSimulator
 
         public void drawButtons()
         {
+            // the following draws the region for the buttons to be detected from a mouse click
             Rectangle exitR = new Rectangle((screenWidth - 300), (screenHeight - (bannerHeight / 2) - (fs / 2)), 250, 50);
             pth = new GraphicsPath();
             pth.AddRectangle(exitR);
@@ -144,19 +147,20 @@ namespace BowlsSimulator
 
         public void drawMat()
         {
+            // the following draws the region for the mat to be detected from a mouse click
             Rectangle outerMat = new Rectangle(ditchW * 2, gameHeight + bannerHeight - (gameHeight / 2) - 50, 200, 100);
             pth = new GraphicsPath();
             pth.AddRectangle(outerMat);
             oMat = new Region(pth);
-
             Rectangle innerMat = new Rectangle(ditchW * 2 + 10, gameHeight + bannerHeight - (gameHeight / 2) - 50 + 10, 180, 80);
             pth = new GraphicsPath();
             pth.AddRectangle(innerMat);
             iMat = new Region(pth);
-
         }
+
         public void drawJack()
         {
+            // draws the jack to a random start position
             int jackX = ran.Next(screenWidth / 2, screenWidth - (ditchW * 6));
             jack = new RectangleF(jackX, centerY, js, js);
         }
@@ -238,13 +242,13 @@ namespace BowlsSimulator
             }
 
             if (optionsButtons.IsVisible(e.Location) && !testOptionColour)
-            {
+            { // if the mouse cursor hovers over the Options button change the colour to Gold
                 optionColour = Brushes.Gold;
                 Refresh();
                 testOptionColour = true;
             }
             else if (testOptionColour && !optionsButtons.IsVisible(e.Location))
-            {
+            { // if it's anywhere else change it back to Blue
                 optionColour = Brushes.DarkBlue;
                 Refresh();
                 testOptionColour = false;
@@ -255,10 +259,10 @@ namespace BowlsSimulator
         {
             if (e.Button == MouseButtons.Left && exitButton.IsVisible(e.Location))// setting up an exit button
             {
-                Application.Exit();
+                Application.Exit(); // closes the game
             }
             else if (e.Button == MouseButtons.Left && optionsButtons.IsVisible(e.Location)) // setting up an option button
-            {
+            { // opens colour picker to change the player colour
                 DialogResult dr = MessageBox.Show("Do you want to Change the colour of player bowls?\n\nClick YES for Player 1\n\nClick NO for Player 2", "Change player colour", MessageBoxButtons.YesNoCancel);
                 if (dr == DialogResult.Yes)
                 {
@@ -271,33 +275,33 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && oMat.IsVisible(e.Location))
             {
-                if (cpu && thisPlayer == 2)
+                if (cpu && thisPlayer == 2 || allCpu == true)
                 {
                     // do nothing // this prevents cheating against the CPU
                 }
                 else
                 {
-                    if (!xHairClick)
-                    {
-                        selectedY = xHairY;
+                    if (!xHairClick) 
+                    { // stores the information from the crosshair, starts the powerbar
+                        selectedY = xHairY; // stores the crosshair position ready to be drawn
                         xHairClick = true;
                         powerClick = false;
-                        xHairTime.Stop();
-                        startPowerBar();
+                        xHairTime.Stop(); // stops the crosshair animation
+                        startPowerBar(); // starts the powerbar animation
                     }
                     else if (!powerClick && xHairClick)
-                    {
-                        selectedP = powerCount;
+                    { // stores the information from the power bar and starts the bowl animation
+                        selectedP = powerCount; // store the power value ready to be drawn
                         powerClick = true;
-                        powerTime.Stop();
-                        startBowl();
+                        powerTime.Stop(); // stopps the power bar animation
+                        startBowl(); // draws the bowl
                     }
                 }
             }
         }
 
         public Brush pickColor(Brush _b)// setting up a funtion to pick up the colour
-        {
+        { // overloaded function to change the colour of the passed in player
             playerColour.SolidColorOnly = false;
             if (playerColour.ShowDialog() == DialogResult.OK)
             {
@@ -313,54 +317,57 @@ namespace BowlsSimulator
         public void newGame()
         {
             // reset variables ready for new game
-            Bowls.Clear();
-            cpu = false;
-            p1score = 0;
-            p2score = 0;
-            currEnd = 1;
-            currBowl = 1;
-            gameNo += 1;
-            DialogResult noPlay = MessageBox.Show("How many players would you like?\n\nClick YES for One Player\nClick NO for Two Players", "Number of Players", MessageBoxButtons.YesNo);
+            Bowls.Clear(); // empty the dynamic structure
+            cpu = false; // sets no cpu player
+            allCpu = false; // sets no cpu players
+            p1score = 0; // sets player score to zero
+            p2score = 0; // sets player two score to zero
+            currEnd = 1; // sets the first end
+            currBowl = 1; // sets the first bowl to be played
+            gameNo += 1; // obsolete not that the dynamic structure is cleared
+            // Asks if the user would like a one or two player game... there is an easter egg here
+            DialogResult noPlay = MessageBox.Show("How many players would you like?\n\nClick YES for One Player\nClick NO for Two Players", "Number of Players", MessageBoxButtons.YesNoCancel);
             if (noPlay == DialogResult.Yes)
             {
                 cpu = true;
+                allCpu = false;
             }
             else if (noPlay == DialogResult.No)
             {
                 cpu = false;
+                allCpu = false;
             }
             else
             {
-                newGame();
+                allCpu = true;
             }
-            gameLoop();
+            gameLoop(); // start the main game loop
         }
 
         public void gameLoop()
         {
-            if (game)
+            if (game) // pointless variable may remove this or do something else with it
             {
-                showOnce = true;
-                startCrossHair();
+                showOnce = true; // shows a dialog once per end
+                startCrossHair(); // starts the cross hair animation
             }
         }
-        public int cpuHairY;
+        
         public void startCrossHair()
         {
-            if (cpu == true && thisPlayer == 2)
-            {
+            if (cpu == true && thisPlayer == 2 || allCpu == true)
+            { // random value for the computers cross hair position
                 cpuHairY = ran.Next(bannerHeight + 15, bannerHeight + gameHeight - 45);
-                //cpuHairY = Math.Abs(cpuHairY / gameSpeed) * gameSpeed;
             }
-            xHairY = bannerHeight + (gameHeight / 2);
-            xHairClick = false;
-            xHairTime.Start();
+            xHairY = bannerHeight + (gameHeight / 2); // indicates new starting position so it always starts in the middle
+            xHairClick = false; // sets a value to indicate that a mouse click is to be expected
+            xHairTime.Start(); // starts the animation
         }
 
         private void xHairTime_Tick(object sender, EventArgs e)
         {
             if (!xHairClick)
-            {
+            { // the following increases and decreases the animation of the crosshair within the bounds specified
                 crossHair = true;
                 if (xHairY > bannerHeight + gameHeight - 45)
                 {
@@ -387,32 +394,32 @@ namespace BowlsSimulator
                 pth.AddRectangle(hair2);
                 xHair2 = new Region(pth);
                 Refresh();
-                if (cpu == true && thisPlayer == 2)
+                if (cpu == true && thisPlayer == 2 || allCpu == true)
                 {
                     if (cpuHairY <= xHairY + gameSpeed && cpuHairY >= xHairY - gameSpeed)
-                    {
-                        selectedY = cpuHairY;
+                    { // the following animates the crosshair until the computers random number is achieved
+                        selectedY = cpuHairY; // stores the position ready to be drawn
                         xHairClick = true;
                         powerClick = false;
-                        xHairTime.Stop();
-                        startPowerBar();
+                        xHairTime.Stop(); // stops the crosshair animation
+                        startPowerBar(); // starts the power bar animation
                     }
                 }
             }
         }
-        public int cpuPower;
+        
         public void startPowerBar()
         {
-            if (cpu == true && thisPlayer == 2)
-            {
-                cpuPower = ran.Next((int)jack.X - (int)startX - 80, (int)jack.X - (int)startX + 80);
+            if (cpu == true && thisPlayer == 2 || allCpu == true)
+            { // random value for the computers power value
+                cpuPower = ran.Next((int)jack.X - (int)startX - 100, (int)jack.X - (int)startX + 200);
             }
             powerClick = false;
-            powerTime.Start();
+            powerTime.Start(); // starts the power bar animation
         }
 
         private void powerTime_Tick(object sender, EventArgs e)
-        {
+        { // the following increases and decreases the animation of the power bar within the bounds specified
             if (!powerClick)
             {
                 if (powerCount > screenWidth)
@@ -436,14 +443,14 @@ namespace BowlsSimulator
                 pth.AddRectangle(pbFront);
                 pbF = new Region(pth);
                 Refresh();
-                if (cpu == true && thisPlayer == 2)
+                if (cpu == true && thisPlayer == 2 || allCpu == true)
                 {
                     if (cpuPower <= powerCount + gameSpeed && cpuPower >= powerCount - gameSpeed)
-                    {
-                        selectedP = cpuPower;
+                    { // the following animates the power bar until the computers random number is achieved
+                        selectedP = cpuPower; // stores the computer value ready to be drawn
                         powerClick = true;
-                        powerTime.Stop();
-                        startBowl();
+                        powerTime.Stop(); // stops powerbar animation
+                        startBowl(); // draws the bowl
                     }
                 }
             }
@@ -451,35 +458,35 @@ namespace BowlsSimulator
 
         public void startBowl()
         {
-            calcBowl();
-            PointF bowlXY = new PointF(startX, startY);
-            drawNewBowl(bowlXY);
+            calcBowl(); // calculates the starting bias
+            PointF bowlXY = new PointF(startX, startY); // defines the starting position of the bowl
+            drawNewBowl(bowlXY); // draws the bowl
             bowlConfirm = true;
-            bowlTime.Interval = 10;
-            bowlTime.Start();
+            bowlTime.Interval = 10; // Sets the initial bowl time animation, this changes throughout its life span
+            bowlTime.Start(); // start the bowl animation
         }
 
         public void calcBowl()
         {
-            double _A = startX - (screenWidth / 2);
-            double _O = startY - selectedY;
-            double _toa = _O / _A;
-            double _deg = Math.Atan(_toa);
-            passY = Math.Tan(_deg) * 2;
+            double _A = startX - (screenWidth / 2); // calculates the adjacent
+            double _O = startY - selectedY; // calculates the opposite
+            double _toa = _O / _A; 
+            double _deg = Math.Atan(_toa); // calculates the radians
+            passY = Math.Tan(_deg) * bowlSpeed; // calculates the new Y co-ords for the next position
         }
 
         public void drawNewBowl(PointF _xy)
         {
-            newbowl = new theBowls();
-            newbowl.bowl = new RectangleF(_xy, bSize);
-            newbowl.play = thisPlayer;
-            newbowl.power = selectedP;
-            newbowl.power30 = newbowl.power / 1.5f;
-            newbowl.newY = passY;
-            newbowl.startY = newbowl.newY;
-            newbowl.bias = 0.0;
-            newbowl.end = currEnd;
-            Bowls.Add(newbowl);
+            newbowl = new theBowls(); // initilises a new object in theBowls class
+            newbowl.bowl = new RectangleF(_xy, bSize); // adds the starting bowls position and size
+            newbowl.play = thisPlayer; // adds the player number the bowl belongs to
+            newbowl.power = selectedP; // adds the initial power allocated to this bowl
+            newbowl.power30 = newbowl.power / 1.5f; // calculates at what position the bias will come int affect
+            newbowl.newY = passY; // adds the next Y co-ord
+            newbowl.startY = newbowl.newY; // adds the starting Y co-ord
+            newbowl.bias = 0.0; // adds the start bias, this will change later
+            newbowl.end = currEnd; // adds the current end
+            Bowls.Add(newbowl); // adds the new bowl to the main list
         }
 
         private void bowlTime_Tick(object sender, EventArgs e)
@@ -487,69 +494,69 @@ namespace BowlsSimulator
             if (bowlConfirm)
             {
                 foreach (theBowls _c in Bowls)
-                {
+                { // resets the collision states if the bowl is not in motion any longer
                     if (_c.power <= 0)
                     {
                         _c.coll = 0;
                     }
                 }
                 if (jPower <= 0)
-                {
+                { // resets the jack collision if the jack is no longer in motion
                     jColl = 0;
                 }
                 foreach (theBowls _b in Bowls)
                 {
                     if (_b.power > 0)
-                    {
+                    { // if the bowl is in motion
                         foreach (theBowls _b2 in Bowls)
                         {
-                            if (_b != _b2 /*&& _b.coll == 0*/)
-                            {
+                            if (_b != _b2 /*&& _b.coll == 0*/) // the comparison is not the same object
+                            { 
                                 if (circleCollide(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, (int)bSize.Height / 2, (int)bSize.Width / 2)) // math provided by Glenn
-                                {
+                                { // if two bowls have colided
                                     if (_b.coll == 0 || _b2.coll == 0)
-                                    {
-                                        newDirect(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, _b.power);
-                                        _b.power = pow;
-                                        _b2.power = pow;
-                                        _b.newY = passY;
-                                        _b2.newY = passY;
-                                        _b.coll = 1;
-                                        _b2.coll = 2;
+                                    { // if both have not previously colided
+                                        newDirect(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, _b.power); // calculate new direction
+                                        _b.power = pow; // add the power after calculation
+                                        _b2.power = pow; // add the power after calculation
+                                        _b.newY = passY; // add the new next Y co-ord
+                                        _b2.newY = passY; // add the new next Y co-ord
+                                        _b.coll = 1; // Set new collision status
+                                        _b2.coll = 2; // Set new collision status
                                     }
                                 }
                             }
                         }
                         if (circleCollide(_b.bowl.X, _b.bowl.Y, jack.X, jack.Y, (int)bSize.Height / 2, (int)bSize.Width / 2)) // math provided by Glenn
-                        {
-                            newDirect(_b.bowl.X, _b.bowl.Y, jack.X, jack.Y, _b.power);
-                            _b.power = pow;
-                            jPower = pow;
-                            _b.newY = passY;
-                            jNewY = passY;
-                            _b.coll = 1;
-                            jColl = 2;
+                        { // if the bowl colides with the jack
+                            newDirect(_b.bowl.X, _b.bowl.Y, jack.X, jack.Y, _b.power); // calculate new direction
+                            _b.power = pow; // add the power after calculation
+                            jPower = pow; // add the power after calculation
+                            _b.newY = passY; // add the new next Y co-ord
+                            jNewY = passY; // add the new next Y co-ord
+                            _b.coll = 1; // Set new collision status
+                            jColl = 2; // Set new collision status
                         }
                         if (_b.coll == 2)
-                        {
+                        { // animate the Bowl in new direction after collision
                             _b.bowl.X = _b.bowl.X + bowlSpeed;
                             _b.power = _b.power - bowlSpeed;
                             _b.bowl.Y += (float)_b.newY;
                         }
                         else if (_b.coll == 1)
-                        {
+                        { // animate the Bowl in new direction after collision
                             _b.bowl.X = _b.bowl.X + bowlSpeed;
                             _b.power = _b.power - bowlSpeed;
                             _b.bowl.Y -= (float)_b.newY;
                         }
                         if (jColl == 2)
-                        {
+                        { // animate the Jack in new direction after collision
                             jack.X = jack.X + bowlSpeed;
                             jPower = jPower - bowlSpeed;
                             jack.Y += (float)jNewY;
                         }
                         else if (jColl == 1)
-                        {
+                        { // animate the Jack in new direction after collision
                             jack.X = jack.X + bowlSpeed;
                             jPower = jPower - bowlSpeed;
                             jack.Y -= (float)jNewY;
@@ -557,7 +564,7 @@ namespace BowlsSimulator
                         else
                         {
                             if (_b.power < 100)
-                            {
+                            { // if the power remaining is less then 100 then reduce or increase the bias depending on the starting Y co-ord
                                 bowlTime.Interval = 17;
                                 if (_b.startY <= 0.00)
                                 {
@@ -569,7 +576,7 @@ namespace BowlsSimulator
                                 }
                             }
                             else if (_b.power < _b.power30)
-                            {
+                            { // if the power remaining is less then 1.5x of the original porwer then reduce or increase the bias depending on the starting Y co-ord
                                 bowlTime.Interval = 15;
                                 if (_b.startY <= 0.00)
                                 {
@@ -583,35 +590,36 @@ namespace BowlsSimulator
                             _b.newY += _b.bias; // plus the calculated bias to the next Y co-ord
                             _b.bowl.X = _b.bowl.X + bowlSpeed; // move the bowl another 2 pixels to the right
                             _b.power = _b.power - bowlSpeed; // reduce the amount of remaining power by 2x
-                            _b.bowl.Y += (float)_b.newY;
+                            _b.bowl.Y += (float)_b.newY; // adjust the position to the new Y co-ord
                         }
                         if (_b.bowl.X > screenWidth - ditchW) // testing a ditch effect
                         {
                             _b.bowl.Size = new SizeF(20, 20); // make the bowl appear smaller if it is in the ditch
                             _b.power = 0; // no power, can no longer move when in this area
-                            _b.coll = 2;
+                            _b.coll = 3; // set a status of 3 to the bowl if it falls in the ditch
                         }
                         if (jack.X > screenWidth - ditchW)
                         {
                             jack.Size = new SizeF(8, 8); // make the jack smaller if it is in the ditch
                             jPower = 0; // no power, can no longer move when in this area
                         }
-                        Refresh();
+                        Refresh(); // refresh teh page graphics to update the above movements
                     }
                 }
-                int c = 0;
-                int l = Bowls.Count();
+                int c = 0; // a count to compare
+                int l = Bowls.Count(); // a count of the dynamic structure size
                 foreach (theBowls _t in Bowls)
                 {
                     if (_t.power <= 0)
-                    {
-                        c++;
+                    { // if the bowl has stoped move
+                        c++; // count
+                        // the following calculates the distance from the bowl to the jack
                         _t.distance = calcDistance(_t.bowl.X + (bs / 2), _t.bowl.Y + (bs / 2), jack.X + (js / 2), jack.Y + (js / 2)); // calculat the distance between the bowl and jack
                     }
                 }
                 if (c == l) // determines if all the bowls have stoped moving
-                {
-                    if (thisPlayer == 1) // the following changes to the next player
+                { // if all bowls have stopped moving
+                    if (thisPlayer == 1) // the following changes to the next player and adjusts the colour
                     {
                         thisPlayer = 2;
                         matColour = p2Colour;
@@ -623,13 +631,13 @@ namespace BowlsSimulator
                     }
                     currBowl++; // move variable to the next bowl to be played
                     if (currBowl > 4) // have all the bowls been played?
-                    {
+                    { // if all bowls for an  end have been played 
                         foreach (theBowls _t in Bowls)
                         {
                             foreach (theBowls _s in Bowls)
                             {
                                 if (_t != _s && _t.end == currEnd && _s.end == currEnd)
-                                {
+                                { // compare the distances to determine which is closest
                                     if (_t.distance < _s.distance)
                                     {
                                         _t.shot += 1;
@@ -641,7 +649,7 @@ namespace BowlsSimulator
                                 }
                             }
                             foreach (theBowls _r in Bowls)
-                            {
+                            { // calculates the final score for an end who starts on the next end
                                 if (_r.shot == 6 && _r.end == currEnd)
                                 {
                                     if (_r.play == 1)
@@ -659,7 +667,7 @@ namespace BowlsSimulator
                                 }
                             }
                             foreach (theBowls _r2 in Bowls)
-                            {
+                            { // determine if the player has more then one pint
                                 if (_r2.shot == 4 && _r2.end == currEnd)
                                 {
                                     if (_r2.play == 1 && p1EndScore > 0)
@@ -673,20 +681,21 @@ namespace BowlsSimulator
                                 }
                             }
                         }
-                        p1score += p1EndScore;
-                        p2score += p2EndScore;
+                        p1score += p1EndScore; // adds the tally score to the overall score
+                        p2score += p2EndScore; // adds the tally score to the overall score
                         if (showOnce)
-                        {
+                        { 
                             bowlTime.Stop();
+                            // displays the result of the end
                             DialogResult ee = MessageBox.Show("Well done, the results of end " + currEnd + " are as followed\n\nPlayer 1 Scored : " + p1EndScore + "\nPlayer 2 Scored : " + p2EndScore + "\n\n\nClick OK to continue to the next end", "Results", MessageBoxButtons.OK);
                             if (ee == DialogResult.OK)
                             {
-                                p1EndScore = 0;
-                                p2EndScore = 0;
+                                p1EndScore = 0; // resets the tally score for the next end
+                                p2EndScore = 0; // resets the tally score for the next end
                                 currEnd++; // move to the next end
                                 currBowl = 1; // reset first bowl to 1
                                 if (p1score >= 7 || p2score >= 7)
-                                {
+                                { // determines if there is a victor
                                     string winner;
                                     if (p1score >= 21)
                                     {
@@ -696,44 +705,46 @@ namespace BowlsSimulator
                                     {
                                         winner = "Two";
                                     }
+                                    // displays the final winn and asks if another game is to be played
                                     DialogResult end = MessageBox.Show("Congratulation\n\nPlayer " + winner + " is the WINNER\n\nWould you like to play again?", "WINNER!", MessageBoxButtons.YesNo);
                                     if (end == DialogResult.Yes)
                                     {
-                                        newGame();
+                                        newGame(); // resets for a new game
                                     }
                                     else
                                     {
-                                        Application.Exit();
+                                        Application.Exit(); // closes the game
                                     }
                                 }
                                 
                                 drawJack(); // if the jack is moved off position, this will recenter it for the next end
-                                gameLoop();
+                                gameLoop(); // repeat game loop
                             }
                             showOnce = false;
                         }
                     }
                     else
                     {
-                        bowlTime.Stop();
-                        gameLoop();
+                        bowlTime.Stop(); // stops the bowl animation
+                        gameLoop(); // repeats gameloop
                     }
                 }
             }
         }
-        public bool showOnce;
+        
         public bool circleCollide(float _X1, float _Y1, float _X2, float _Y2, int _r1, int _r2)
-        { // the following code was provided by Glenn
+        { // the following code was provided by Glenn, calculates if two circles intersect
             return (Math.Sqrt(Math.Pow(Math.Abs(_X1 - _X2), 2) + Math.Pow(Math.Abs(_Y1 - _Y2), 2)) <= (_r1 + _r2));
         }
 
         public void newDirect(float _X1, float _Y1, float _X2, float _Y2, float _p)
         {
-            double _A = _X1 - _X2;
-            double _O = _Y1 - _Y2;
+            double _A = _X1 - _X2; // calculates the adjacent
+            double _O = _Y1 - _Y2; // calculates the opposite
             double _toa = _O / _A;
-            double _deg = Math.Atan(_toa);
-            passY = Math.Tan(_deg) * bowlSpeed;
+            double _deg = Math.Atan(_toa); // calculates the radians
+            passY = Math.Tan(_deg) * bowlSpeed; // stores the new Y co-ord
+            // the following offsets a collision so items no longer disappear off the screen at sharp angles
             if (passY > 4)
             {
                 passY = 4;
@@ -742,16 +753,16 @@ namespace BowlsSimulator
             {
                 passY = -4;
             }
-            pow = _p / 2.5f;
+            pow = _p / 2.5f; // reduces the amount of power remaining for each bowl
         }
 
         public double calcDistance(float _X1, float _Y1, float _X2, float _Y2)
         {
-            double _A = _X1 - _X2;
-            double _O = _Y1 - _Y2;
+            double _A = _X1 - _X2; // calculates the adjacent
+            double _O = _Y1 - _Y2; // calculates the opposite
             double _toa = _O / _A;
-            double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2));
-            return _H;
+            double _H = Math.Sqrt(Math.Pow((_A), 2)) + Math.Sqrt(Math.Pow((_O), 2)); // calculates the hypotenuse
+            return _H; // returns the hypotenuse as a value of distance
         }
 
         private void gameLoopy_Tick(object sender, EventArgs e)
