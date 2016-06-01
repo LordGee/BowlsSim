@@ -271,20 +271,27 @@ namespace BowlsSimulator
             }
             else if (e.Button == MouseButtons.Left && oMat.IsVisible(e.Location))
             {
-                if (!xHairClick)
+                if (cpu && thisPlayer == 2)
                 {
-                    selectedY = xHairY;
-                    xHairClick = true;
-                    powerClick = false;
-                    xHairTime.Stop();
-                    startPowerBar();
+                    // do nothing // this prevents cheating against the CPU
                 }
-                else if (!powerClick && xHairClick)
+                else
                 {
-                    selectedP = powerCount;
-                    powerClick = true;
-                    powerTime.Stop();
-                    startBowl();
+                    if (!xHairClick)
+                    {
+                        selectedY = xHairY;
+                        xHairClick = true;
+                        powerClick = false;
+                        xHairTime.Stop();
+                        startPowerBar();
+                    }
+                    else if (!powerClick && xHairClick)
+                    {
+                        selectedP = powerCount;
+                        powerClick = true;
+                        powerTime.Stop();
+                        startBowl();
+                    }
                 }
             }
         }
