@@ -73,6 +73,7 @@ namespace BowlsSimulator
         public bool xHairClick, xHairTest;
         public bool bowlConfirm;
         public int p1score, p2score, p1EndScore, p2EndScore, currEnd, currBowl, gameNo; // current stats
+        public bool cpu;
 
         class theBowls // The main dynamic class
         {
@@ -306,11 +307,25 @@ namespace BowlsSimulator
         {
             // reset variables ready for new game
             Bowls.Clear();
+            cpu = false;
             p1score = 0;
             p2score = 0;
             currEnd = 1;
             currBowl = 1;
             gameNo += 1;
+            DialogResult noPlay = MessageBox.Show("How many players would you like?\n\nClick YES for One Player\nClick NO for Two Players", "Number of Players", MessageBoxButtons.YesNo);
+            if (noPlay == DialogResult.Yes)
+            {
+                cpu = true;
+            }
+            else if (noPlay == DialogResult.No)
+            {
+                cpu = false;
+            }
+            else
+            {
+                newGame();
+            }
             gameLoop();
         }
 
@@ -322,9 +337,14 @@ namespace BowlsSimulator
                 startCrossHair();
             }
         }
-
+        public int cpuHairY;
         public void startCrossHair()
         {
+            if (cpu == true && thisPlayer == 2)
+            {
+                cpuHairY = ran.Next(bannerHeight + 15, bannerHeight + gameHeight - 45);
+                //cpuHairY = Math.Abs(cpuHairY / gameSpeed) * gameSpeed;
+            }
             xHairY = bannerHeight + (gameHeight / 2);
             xHairClick = false;
             xHairTime.Start();
@@ -360,11 +380,26 @@ namespace BowlsSimulator
                 pth.AddRectangle(hair2);
                 xHair2 = new Region(pth);
                 Refresh();
+                if (cpu == true && thisPlayer == 2)
+                {
+                    if (cpuHairY <= xHairY + gameSpeed && cpuHairY >= xHairY - gameSpeed)
+                    {
+                        selectedY = cpuHairY;
+                        xHairClick = true;
+                        powerClick = false;
+                        xHairTime.Stop();
+                        startPowerBar();
+                    }
+                }
             }
         }
-
+        public int cpuPower;
         public void startPowerBar()
         {
+            if (cpu == true && thisPlayer == 2)
+            {
+                cpuPower = ran.Next((int)jack.X - (int)startX - 80, (int)jack.X - (int)startX + 80);
+            }
             powerClick = false;
             powerTime.Start();
         }
@@ -373,7 +408,7 @@ namespace BowlsSimulator
         {
             if (!powerClick)
             {
-                if (powerCount > ClientSize.Width)
+                if (powerCount > screenWidth)
                 {
                     powerTest = true;
                 }
@@ -394,6 +429,16 @@ namespace BowlsSimulator
                 pth.AddRectangle(pbFront);
                 pbF = new Region(pth);
                 Refresh();
+                if (cpu == true && thisPlayer == 2)
+                {
+                    if (cpuPower <= powerCount + gameSpeed && cpuPower >= powerCount - gameSpeed)
+                    {
+                        selectedP = cpuPower;
+                        powerClick = true;
+                        powerTime.Stop();
+                        startBowl();
+                    }
+                }
             }
         }
 
