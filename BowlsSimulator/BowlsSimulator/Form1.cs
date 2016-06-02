@@ -167,61 +167,68 @@ namespace BowlsSimulator
         
         private void frmMainGame_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = e.Graphics;
-            Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
-            Font ffs = new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold); // probably not the best name for a variable ffs = Font Family Smaller, not the more commonly used phrase
-            g.FillRectangle(Brushes.DarkGreen, 0, 0, screenWidth, screenHeight); // Due to the grassy background hindering performance this is a solid colour the covers the whole screen... and works
-            g.FillRectangle(Brushes.Brown, screenWidth - ditchW, bannerHeight, ditchW, gameHeight); // draw the right ditch
-            g.FillRectangle(Brushes.Brown, 0, bannerHeight, ditchW, gameHeight); // draw the left ditch
-            foreach (theBowls _b in Bowls) // draws any bowls for the current end to the canvas
+            try
             {
-                if (_b.end == currEnd)
+                Graphics g = e.Graphics;
+                Font ff = new Font("resources/Comfortaa-Regular.ttf", fs, FontStyle.Bold); // defines the font style for the graphic text used // No longer needed as it's now in its own function
+                Font ffs = new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold); // probably not the best name for a variable ffs = Font Family Smaller, not the more commonly used phrase
+                g.FillRectangle(Brushes.DarkGreen, 0, 0, screenWidth, screenHeight); // Due to the grassy background hindering performance this is a solid colour the covers the whole screen... and works
+                g.FillRectangle(Brushes.Brown, screenWidth - ditchW, bannerHeight, ditchW, gameHeight); // draw the right ditch
+                g.FillRectangle(Brushes.Brown, 0, bannerHeight, ditchW, gameHeight); // draw the left ditch
+                foreach (theBowls _b in Bowls) // draws any bowls for the current end to the canvas
                 {
-                    if (_b.play == 1)
+                    if (_b.end == currEnd)
                     {
-                        g.FillEllipse(p1Colour, _b.bowl);
-                    }
-                    else if (_b.play == 2)
-                    {
-                        g.FillEllipse(p2Colour, _b.bowl);
+                        if (_b.play == 1)
+                        {
+                            g.FillEllipse(p1Colour, _b.bowl);
+                        }
+                        else if (_b.play == 2)
+                        {
+                            g.FillEllipse(p2Colour, _b.bowl);
+                        }
                     }
                 }
+                g.FillEllipse(Brushes.White, jack); // Draws the jack, the jack is drawn after the bowls . If theres a glitch the jack should still be visiable
+                g.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
+                g.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
+                g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
+                g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
+                g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
+                g.DrawString("Player One: " + p1score, ffs, p1Colour, new Point(ditchW, ditchW)); // draw player ones score to the top left
+                g.DrawString("Player Two: " + p2score, ffs, p2Colour, new Point(ditchW, ditchW * 3)); // just below player one
+                g.DrawString("Now Playing", ffs, Brushes.Black, new Point(screenWidth - 300, ditchW)); // the following presents the current player although now the mat changes colour this can be obsolete
+                if (thisPlayer == 1)
+                {
+                    g.DrawString("Player: ONE", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p1Colour, new Point(screenWidth - 300, ditchW * 3));
+                }
+                else if (thisPlayer == 2)
+                {
+                    g.DrawString("Player: TWO", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p2Colour, new Point(screenWidth - 300, ditchW * 3));
+                }
+                //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
+                g.FillRegion(Brushes.Transparent, exitButton); // hidden region, found this easier to detect a mouse click
+                g.FillRegion(Brushes.Transparent, optionsButtons); // same as the last one
+                if (oMat != null)
+                {
+                    g.FillRegion(Brushes.White, oMat);
+                    g.FillRegion(matColour, iMat);
+
+                }
+                if (pbF != null)
+                {
+                    g.FillRegion(Brushes.DarkViolet, pbF);
+                }
+
+                if (crossHair && !xHairClick && xHair1 != null)
+                {
+                    g.FillRegion(Brushes.Yellow, xHair1);
+                    g.FillRegion(Brushes.Yellow, xHair2);
+                }
             }
-            g.FillEllipse(Brushes.White, jack); // Draws the jack, the jack is drawn after the bowls . If theres a glitch the jack should still be visiable
-            g.FillRectangle(Brushes.LightGreen, 0, 0, screenWidth, bannerHeight); // draw the header banner
-            g.FillRectangle(Brushes.LightGreen, 0, bannerHeight + gameHeight, screenWidth, bannerHeight); // draw the footer banner
-            g.FillRectangle(Brushes.PeachPuff, 0, bannerHeight + gameHeight, screenWidth, 30); // draw bar
-            g.DrawString("Options", ff, optionColour, new Point(50, (screenHeight - (bannerHeight / 2)) - (fs / 2))); // draw the options button
-            g.DrawString("Exit Game", ff, exitColour, new Point((screenWidth - 300), (screenHeight - bannerHeight / 2) - (fs / 2))); // draw the exit button
-            g.DrawString("Player One: " + p1score , ffs, p1Colour, new Point(ditchW, ditchW)); // draw player ones score to the top left
-            g.DrawString("Player Two: " + p2score, ffs, p2Colour, new Point(ditchW, ditchW * 3)); // just below player one
-            g.DrawString("Now Playing", ffs, Brushes.Black, new Point(screenWidth - 300, ditchW)); // the following presents the current player although now the mat changes colour this can be obsolete
-            if (thisPlayer == 1)
+            catch (Exception ex)
             {
-                g.DrawString("Player: ONE", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p1Colour, new Point(screenWidth - 300, ditchW * 3));
-            }
-            else if (thisPlayer == 2)
-            {
-                g.DrawString("Player: TWO", new Font("resources/Comfortaa-Regular.ttf", 20, FontStyle.Bold), p2Colour, new Point(screenWidth - 300, ditchW * 3));
-            }
-            //g.DrawString("Two Player Game", ff, twoplayerColour, new Point((screenWidth - 900), (screenHeight / 2) - (fs / 2))); //  draw option menu button
-            g.FillRegion(Brushes.Transparent, exitButton); // hidden region, found this easier to detect a mouse click
-            g.FillRegion(Brushes.Transparent, optionsButtons); // same as the last one
-            if (oMat != null)
-            {
-                g.FillRegion(Brushes.White, oMat);
-                g.FillRegion(matColour, iMat);
-                
-            }
-            if (pbF != null)
-            {
-                g.FillRegion(Brushes.DarkViolet, pbF);
-            }
-            
-            if (crossHair && !xHairClick && xHair1 != null)
-            {
-                g.FillRegion(Brushes.Yellow, xHair1);
-                g.FillRegion(Brushes.Yellow, xHair2);
+                MessageBox.Show("Kaa-Boom... Something Broke: " + ex.Message, "Explosion Detected");
             }
         }
 
@@ -495,12 +502,12 @@ namespace BowlsSimulator
             {
                 foreach (theBowls _c in Bowls)
                 { // resets the collision states if the bowl is not in motion any longer
-                    if (_c.power <= 0 && _c.end == currEnd)
+                    if (_c.power <= 0 && _c.end == currEnd &&  _c.coll != 3)
                     {
                         _c.coll = 0;
                     }
                 }
-                if (jPower <= 0)
+                if (jPower <= 0 && jColl != 3)
                 { // resets the jack collision if the jack is no longer in motion
                     jColl = 0;
                 }
@@ -514,7 +521,7 @@ namespace BowlsSimulator
                             { 
                                 if (circleCollide(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, (int)bSize.Height / 2, (int)bSize.Width / 2)) // math provided by Glenn
                                 { // if two bowls have colided
-                                    if (_b.coll == 0 || _b2.coll == 0)
+                                    if (_b.coll == 0 || _b2.coll == 0 && _b2.coll != 3)
                                     { // if both have not previously colided
                                         newDirect(_b.bowl.X, _b.bowl.Y, _b2.bowl.X, _b2.bowl.Y, _b.power); // calculate new direction
                                         _b.power = pow; // add the power after calculation
@@ -537,25 +544,25 @@ namespace BowlsSimulator
                             _b.coll = 1; // Set new collision status
                             jColl = 2; // Set new collision status
                         }
-                        if (_b.coll == 2)
+                        if (_b.coll == 2 && _b.coll != 3)
                         { // animate the Bowl in new direction after collision
                             _b.bowl.X = _b.bowl.X + bowlSpeed;
                             _b.power = _b.power - bowlSpeed;
                             _b.bowl.Y += (float)_b.newY;
                         }
-                        else if (_b.coll == 1)
+                        else if (_b.coll == 1 && _b.coll != 3)
                         { // animate the Bowl in new direction after collision
                             _b.bowl.X = _b.bowl.X + bowlSpeed;
                             _b.power = _b.power - bowlSpeed;
                             _b.bowl.Y -= (float)_b.newY;
                         }
-                        if (jColl == 2)
+                        if (jColl == 2 && jColl != 3)
                         { // animate the Jack in new direction after collision
                             jack.X = jack.X + bowlSpeed;
                             jPower = jPower - bowlSpeed;
                             jack.Y += (float)jNewY;
                         }
-                        else if (jColl == 1)
+                        else if (jColl == 1 && jColl != 3)
                         { // animate the Jack in new direction after collision
                             jack.X = jack.X + bowlSpeed;
                             jPower = jPower - bowlSpeed;
@@ -587,22 +594,24 @@ namespace BowlsSimulator
                                     _b.bias = -0.002;
                                 }
                             }
+                            if (_b.bowl.X > screenWidth - ditchW) // testing a ditch effect
+                            {
+                                _b.bowl.Size = new SizeF(20, 20); // make the bowl appear smaller if it is in the ditch
+                                _b.power = 0; // no power, can no longer move when in this area
+                                _b.coll = 3; // set a status of 3 to the bowl if it falls in the ditch
+                            }
+                            if (jack.X > screenWidth - ditchW)
+                            {
+                                jack.Size = new SizeF(8, 8); // make the jack smaller if it is in the ditch
+                                jPower = 0; // no power, can no longer move when in this area
+                                jColl = 3;
+                            }
                             _b.newY += _b.bias; // plus the calculated bias to the next Y co-ord
                             _b.bowl.X = _b.bowl.X + bowlSpeed; // move the bowl another 2 pixels to the right
                             _b.power = _b.power - bowlSpeed; // reduce the amount of remaining power by 2x
                             _b.bowl.Y += (float)_b.newY; // adjust the position to the new Y co-ord
                         }
-                        if (_b.bowl.X > screenWidth - ditchW) // testing a ditch effect
-                        {
-                            _b.bowl.Size = new SizeF(20, 20); // make the bowl appear smaller if it is in the ditch
-                            _b.power = 0; // no power, can no longer move when in this area
-                            _b.coll = 3; // set a status of 3 to the bowl if it falls in the ditch
-                        }
-                        if (jack.X > screenWidth - ditchW)
-                        {
-                            jack.Size = new SizeF(8, 8); // make the jack smaller if it is in the ditch
-                            jPower = 0; // no power, can no longer move when in this area
-                        }
+                        
                         Refresh(); // refresh teh page graphics to update the above movements
                     }
                 }
@@ -703,7 +712,7 @@ namespace BowlsSimulator
                                 if (p1score >= 7 || p2score >= 7)
                                 { // determines if there is a victor
                                     string winner;
-                                    if (p1score >= 21)
+                                    if (p1score >= 7)
                                     {
                                         winner = "One";
                                     }
