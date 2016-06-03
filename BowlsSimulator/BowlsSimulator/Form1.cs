@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading; // use for creating seperate theads of functions.
+using System.Media;
 
 
 
@@ -65,6 +66,8 @@ namespace BowlsSimulator
         public GraphicsPath pth; // defines the path for the appropriate regions
         public GraphicsPath mpth; // same as above
         public SizeF bSize = new SizeF(30, 30);
+        public SoundPlayer click = new SoundPlayer(Properties.Resources.click);
+        public SoundPlayer clap = new SoundPlayer(Properties.Resources.clap);
         // Booleans
         public bool testExitColour, testOptionColour; // Indicates if the colour has been changed already
         public bool game = true; // starts the game
@@ -95,13 +98,14 @@ namespace BowlsSimulator
 
         private void frmMainGame_Load(object sender, EventArgs e)
         {
+            // FormBorderStyle = FormBorderStyle.None; // didn't offset the screen size, had grey border at bottom and right
             screenSize(); // executes function to find out the form width and height at launch
             // customFont(); // defunct: worked well to start but now crashes the application // executes function that adds a custom font family to be used regardless of whether the user has it installed or not
             drawButtons(); // draws regions for generic layout
             drawJack(); // draws the jack to the screen
             drawMat(); // defines the mat region that is drawn to the canvas
             // display instruction and start or exit game
-            DialogResult startBox = MessageBox.Show("Would you like to start a new game?\n\n\nInstructions\n\n1. When the game starts a crosshair will appear this determines the direction of play.\n2. Click the black and white mat to stop the crosshair.\n3. The power bar will start moving right and left across the screen, this will determine how far your bowl will travel\n4. Click the black and white mat to stop the Power Bar\n5. Your bowl will be played, and the next player takes their turn. Once all bowls are played (2 each) the closest bowl scores 1 point, if that same player has the second closest bowl then that player will score 2 points.\n\n The game ends with the first player to achieve 7 points.\n\n\n GOOD LUCK", "New Game?", MessageBoxButtons.YesNo);
+            DialogResult startBox = MessageBox.Show("Would you like to start a new game?\n\n\nInstructions\n\n1. When the game starts a crosshair will appear this determines the direction of play.\n2. Click the black and white mat to stop the crosshair.\n3. The power bar will start moving right and left across the screen, this will determine how far your bowl will travel\n4. Click the black and white mat to stop the Power Bar\n5. Your bowl will be played, and the next player takes their turn. Once all bowls are played (2 each) the closest bowl to the jack (smaller white ball) scores 1 point, if that same player has the second closest bowl to the jack then that player will score 2 points.\n\n The game ends with the first player to achieve 7 points.\n\n\n GOOD LUCK", "New Game?", MessageBoxButtons.YesNo);
             if (startBox == DialogResult.Yes)
             {
                 newGame(); // starts and resets the game controller
@@ -239,6 +243,7 @@ namespace BowlsSimulator
                 exitColour = Brushes.Gold;
                 Refresh();
                 testExitColour = true;
+                testOptionColour = true; // had to add so the option button didn't change as well
 
             }
             else if (testExitColour && !exitButton.IsVisible(e.Location))
@@ -246,6 +251,7 @@ namespace BowlsSimulator
                 exitColour = Brushes.DarkRed;
                 Refresh();
                 testExitColour = false;
+                testOptionColour = false; // had to add so the option button didn't change as well
             }
 
             if (optionsButtons.IsVisible(e.Location) && !testOptionColour)
@@ -294,6 +300,7 @@ namespace BowlsSimulator
                         xHairClick = true;
                         powerClick = false;
                         xHairTime.Stop(); // stops the crosshair animation
+                        click.Play();
                         startPowerBar(); // starts the powerbar animation
                     }
                     else if (!powerClick && xHairClick)
@@ -301,6 +308,7 @@ namespace BowlsSimulator
                         selectedP = powerCount; // store the power value ready to be drawn
                         powerClick = true;
                         powerTime.Stop(); // stopps the power bar animation
+                        click.Play();
                         startBowl(); // draws the bowl
                     }
                 }
@@ -409,6 +417,7 @@ namespace BowlsSimulator
                         xHairClick = true;
                         powerClick = false;
                         xHairTime.Stop(); // stops the crosshair animation
+                        click.Play();
                         startPowerBar(); // starts the power bar animation
                     }
                 }
@@ -457,6 +466,7 @@ namespace BowlsSimulator
                         selectedP = cpuPower; // stores the computer value ready to be drawn
                         powerClick = true;
                         powerTime.Stop(); // stops powerbar animation
+                        click.Play();
                         startBowl(); // draws the bowl
                     }
                 }
@@ -530,6 +540,7 @@ namespace BowlsSimulator
                                         _b2.newY = passY; // add the new next Y co-ord
                                         _b.coll = 1; // Set new collision status
                                         _b2.coll = 2; // Set new collision status
+                                        click.Play();
                                     }
                                 }
                             }
@@ -541,8 +552,13 @@ namespace BowlsSimulator
                             jPower = pow; // add the power after calculation
                             _b.newY = passY; // add the new next Y co-ord
                             jNewY = passY; // add the new next Y co-ord
+                            if (_b.coll == 0)
+                            {
+                                clap.Play();
+                            }
                             _b.coll = 1; // Set new collision status
                             jColl = 2; // Set new collision status
+                            click.Play();
                         }
                         if (_b.coll == 2 && _b.coll != 3)
                         { // animate the Bowl in new direction after collision
@@ -721,6 +737,7 @@ namespace BowlsSimulator
                                         winner = "Two";
                                     }
                                     // displays the final winn and asks if another game is to be played
+                                    clap.Play();
                                     DialogResult end = MessageBox.Show("Congratulation\n\nPlayer " + winner + " is the WINNER\n\nWould you like to play again?", "WINNER!", MessageBoxButtons.YesNo);
                                     if (end == DialogResult.Yes)
                                     {
