@@ -552,13 +552,17 @@ namespace BowlsSimulator
                             jPower = pow; // add the power after calculation
                             _b.newY = passY; // add the new next Y co-ord
                             jNewY = passY; // add the new next Y co-ord
-                            if (_b.coll == 0)
+                            if (_b.coll == 0) // if the bowl has not previously collided play a clap
                             {
                                 clap.Play();
                             }
+                            else
+                            {
+                                click.Play();
+                            }
                             _b.coll = 1; // Set new collision status
                             jColl = 2; // Set new collision status
-                            click.Play();
+                            //click.Play();
                         }
                         if (_b.coll == 2 && _b.coll != 3)
                         { // animate the Bowl in new direction after collision
@@ -591,11 +595,11 @@ namespace BowlsSimulator
                                 bowlTime.Interval = 17;
                                 if (_b.startY <= 0.00)
                                 {
-                                    _b.bias = 0.01;
+                                    _b.bias = 0.012;
                                 }
                                 else
                                 {
-                                    _b.bias = -0.01;
+                                    _b.bias = -0.012;
                                 }
                             }
                             else if (_b.power < _b.power30)
