@@ -595,11 +595,11 @@ namespace BowlsSimulator
                                 bowlTime.Interval = 17;
                                 if (_b.startY <= 0.00)
                                 {
-                                    _b.bias = 0.012;
+                                    _b.bias = 0.022;
                                 }
                                 else
                                 {
-                                    _b.bias = -0.012;
+                                    _b.bias = -0.022;
                                 }
                             }
                             else if (_b.power < _b.power30)
@@ -607,11 +607,11 @@ namespace BowlsSimulator
                                 bowlTime.Interval = 15;
                                 if (_b.startY <= 0.00)
                                 {
-                                    _b.bias = 0.002;
+                                    _b.bias = 0.012;
                                 }
                                 else
                                 {
-                                    _b.bias = -0.002;
+                                    _b.bias = -0.012;
                                 }
                             }
                             if (_b.bowl.X > screenWidth - ditchW) // testing a ditch effect
